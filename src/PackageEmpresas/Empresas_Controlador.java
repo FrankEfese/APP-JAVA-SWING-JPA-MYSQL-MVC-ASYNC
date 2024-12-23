@@ -1,6 +1,6 @@
 package PackageEmpresas;
 
-import PackageEmpresas.exceptions.NonexistentEntityException;
+import PackageExceptions.NonexistentEntityException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

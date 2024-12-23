@@ -1,7 +1,7 @@
 package PackageSeguros;
 
 import PackageEmpresas.Empresas_Object;
-import PackageSeguros.exceptions.NonexistentEntityException;
+import PackageExceptions.NonexistentEntityException;
 import java.awt.HeadlessException;
 import java.io.Serializable;
 import javax.persistence.Query;

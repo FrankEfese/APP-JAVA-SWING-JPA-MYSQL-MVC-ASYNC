@@ -1,7 +1,7 @@
 package PackageProductos;
 
 import PackageEmpresas.Empresas_Object;
-import PackageProductos.exceptions.NonexistentEntityException;
+import PackageExceptions.NonexistentEntityException;
 import java.awt.HeadlessException;
 import java.io.Serializable;
 import java.util.ArrayList;

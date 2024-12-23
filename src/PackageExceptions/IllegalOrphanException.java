@@ -1,4 +1,4 @@
-package PackageEmpresas.exceptions;
+package PackageExceptions;
 
 import java.util.ArrayList;
 import java.util.List;

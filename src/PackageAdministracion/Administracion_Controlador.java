@@ -2,7 +2,7 @@ package PackageAdministracion;
 
 import PackageLogin.Login_JPAC_Modelo;
 import PackageLogin.Login_Object;
-import PackageLogin.exceptions.NonexistentEntityException;
+import PackageExceptions.NonexistentEntityException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

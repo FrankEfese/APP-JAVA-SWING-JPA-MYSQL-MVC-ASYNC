@@ -1,4 +1,5 @@
-package PackageEmpleados.exceptions;
+package PackageExceptions;
+
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {

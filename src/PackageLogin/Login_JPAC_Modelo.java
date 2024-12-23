@@ -1,6 +1,6 @@
 package PackageLogin;
 
-import PackageLogin.exceptions.NonexistentEntityException;
+import PackageExceptions.NonexistentEntityException;
 import java.awt.HeadlessException;
 import java.io.Serializable;
 import java.util.ArrayList;

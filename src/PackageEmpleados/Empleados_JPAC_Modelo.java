@@ -1,6 +1,6 @@
 package PackageEmpleados;
 
-import PackageEmpleados.exceptions.NonexistentEntityException;
+import PackageExceptions.NonexistentEntityException;
 import PackageEmpresas.Empresas_Object;
 import java.awt.HeadlessException;
 import java.io.Serializable;

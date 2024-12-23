@@ -1,7 +1,7 @@
 package PackageEmpresas;
 
 import PackageEmpleados.Empleados_Object;
-import PackageEmpresas.exceptions.NonexistentEntityException;
+import PackageExceptions.NonexistentEntityException;
 import PackageProductos.Productos_Object;
 import PackageSeguros.Seguros_Object;
 import java.awt.HeadlessException;
