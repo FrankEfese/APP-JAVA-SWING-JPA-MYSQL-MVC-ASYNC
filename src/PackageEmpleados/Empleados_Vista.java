@@ -527,6 +527,23 @@ public class Empleados_Vista extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnActualizarEmpleadoActionPerformed
 
+    
+    //METODO PARA CERRAR LAS VENTANAS
+    public void eliminarVentanas(){
+        
+        if(this.verEmpleadoVista != null){
+            this.verEmpleadoVista.dispose();
+        }
+        
+        if(this.agregarEmpleadoVista != null){
+            this.agregarEmpleadoVista.dispose();
+        }
+        
+        if(this.actualizarEmpleadoVista != null){
+            this.actualizarEmpleadoVista.dispose();
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarEmpleado;
