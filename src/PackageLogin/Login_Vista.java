@@ -1,22 +1,23 @@
 package PackageLogin;
 
 import PackagePrincipal.Principal_Vista;
+import PackageTools.Validaciones;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
 public class Login_Vista extends javax.swing.JFrame {
 
-    //OBJETO DEL CONTROLADOR DEL LOGIN
+    // CONTROLADOR - LOGIN
     private final Login_Controlador controladorLogin = new Login_Controlador();
 
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Login_Vista() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
 
-    //COMPONENTES DE LA INTERFAZ
+    // COMPONENTES DE LA INTERFAZ
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -151,30 +152,49 @@ public class Login_Vista extends javax.swing.JFrame {
 
     //----- METODOS -----
     
-    //METODO PARA CAMBIAR LA ESTETICA DEL CURSOR Y EL BOTON CUANDO EL CURSOR ESTA ENCIMA DEL BOTON DE INICIO DE SESION
+    // METODO-ESTETICA
     private void btnInicioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseEntered
         this.btnInicio.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnInicio.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnInicioMouseEntered
 
-    //METODO PARA CUANDO PULSAS EL BOTON DE INICIO DE SESION
+    // METODO PARA CUANDO PULSAS EL BOTON DE INICIO DE SESION
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
 
-        String correo = this.txtCorreo.getText();
-        String contraseña = new String(this.txtContrasenia.getPassword());
-        if (this.controladorLogin.comprobarCamposUsuario_C(correo, contraseña) || (correo.equals("admin") && contraseña.equals("admin"))) {
-            JOptionPane.showMessageDialog(null, "ADMINISTRADOR CORRECTO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
-            Principal_Vista vistaPrincipal = new Principal_Vista(this);
-            this.setVisible(false);
-            vistaPrincipal.setVisible(true);
-            Principal_Vista.correoAdmin = correo;
-        } else {
-            JOptionPane.showMessageDialog(null, "ADMINISTRADOR INCORRECTO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+        try{
+            
+            String correo = this.txtCorreo.getText();
+            String contraseña = new String(this.txtContrasenia.getPassword());
+            
+            if(Validaciones.validarLogin(correo, contraseña)){
+                
+                this.controladorLogin.comprobarCamposUsuario_C(correo, contraseña).thenAccept(existe ->{
+                
+                    if (existe || (correo.equals("admin") && contraseña.equals("admin"))) {
+                    
+                        JOptionPane.showMessageDialog(null, "ADMINISTRADOR CORRECTO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                        Principal_Vista vistaPrincipal = new Principal_Vista(this);
+                        this.setVisible(false);
+                        vistaPrincipal.setVisible(true);
+                        Principal_Vista.correoAdministrador = correo;
+                
+                    } else {
+                        JOptionPane.showMessageDialog(null, "ADMINISTRADOR INCORRECTO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+                    }
+                
+                });
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "HAS INTRODUCIDO UN DATO ERRONEO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            }
+                                    
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "HAS INTRODUCIDO UN DATO ERRONEO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnInicioActionPerformed
 
-    //METODO PARA CAMBIAR LA ESTETICA DEL BOTON CUANDO EL CURSOR SALE DEL BOTON DE INICIO DE SESION
+    // METODO-ESTETICA
     private void btnInicioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseExited
         this.btnInicio.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnInicioMouseExited

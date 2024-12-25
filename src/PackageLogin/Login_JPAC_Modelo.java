@@ -16,25 +16,20 @@ import javax.swing.JOptionPane;
 
 public class Login_JPAC_Modelo implements Serializable {
     
-    private EntityManagerFactory emf = null;
+    private EntityManagerFactory emf = null;  
 
-    //CONSTRUCTOR
-    public Login_JPAC_Modelo(EntityManagerFactory emf) {
-        this.emf = emf;
-    }   
-
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Login_JPAC_Modelo() {
         this.emf = Persistence.createEntityManagerFactory("GESTOR-JPA-PU");
     }
     
-    //GETTER
+    // GETTER
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
     
-    //METODO PARA CREAR UN ADMINISTRADOR (MODELO) 
+    // METODO PARA CREAR UN ADMINISTRADOR (MODELO) 
     public void create(Login_Object login_Object) {
         EntityManager em = null;
         try {
@@ -42,9 +37,9 @@ public class Login_JPAC_Modelo implements Serializable {
             em.getTransaction().begin();
             em.persist(login_Object);
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "ADMIN AGREGADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ADMINISTRADOR AGREGADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
         } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL AGREGAR EL ADMIN", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL AGREGAR EL ADMINISTRADOR", "INFORMACION", JOptionPane.ERROR_MESSAGE);
         }finally {
             if (em != null) {
                 em.close();
@@ -53,7 +48,7 @@ public class Login_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA EDITAR UN ADMINISTRADOR (MODELO)
+    // METODO PARA EDITAR UN ADMINISTRADOR (MODELO)
     public void edit(Login_Object login_Object) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -61,7 +56,7 @@ public class Login_JPAC_Modelo implements Serializable {
             em.getTransaction().begin();
             login_Object = em.merge(login_Object);
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "ADMIN ACTUALIZADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ADMINISTRADOR ACTUALIZADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -70,7 +65,7 @@ public class Login_JPAC_Modelo implements Serializable {
                     throw new NonexistentEntityException("The login_Object with id " + id + " no longer exists.");
                 }
             }
-            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR EL ADMIN", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR EL ADMINISTRADOR", "INFORMACION", JOptionPane.ERROR_MESSAGE);
             throw ex;
         } finally {
             if (em != null) {
@@ -80,7 +75,7 @@ public class Login_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA ELIMINAR UN ADMINISTRADOR (MODELO)
+    // METODO PARA ELIMINAR UN ADMINISTRADOR (MODELO)
     public void destroy(int id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -95,9 +90,9 @@ public class Login_JPAC_Modelo implements Serializable {
             }
             em.remove(login_Object);
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "ADMIN ELIMINADO CORRECTAMENTE", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ADMINISTRADOR ELIMINADO CORRECTAMENTE", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
         } catch (NonexistentEntityException | HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL ELIMINAR EL ADMIN", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL ELIMINAR EL ADMINISTRADOR", "INFORMACION", JOptionPane.ERROR_MESSAGE);
         }finally {
             if (em != null) {
                 em.close();
@@ -106,22 +101,22 @@ public class Login_JPAC_Modelo implements Serializable {
     }
     
 
-    //METODO PARA OBTENER TODOS LOS ADMINISTRADORES (MODELO)
+    // METODO PARA OBTENER TODOS LOS ADMINISTRADORES (MODELO)
     public List<Login_Object> findLogin_ObjectEntities() {
         try{
             return findLogin_ObjectEntities(true, -1, -1);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LOS ADMINS", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LOS ADMINISTRADORES", "INFORMACION", JOptionPane.ERROR_MESSAGE);
             return new ArrayList<>();
         }  
     }
 
-    //METODO PARA OBTENER TODOS LOS ADMINISTRADORES (MODELO)
+    // METODO PARA OBTENER TODOS LOS ADMINISTRADORES (MODELO)
     public List<Login_Object> findLogin_ObjectEntities(int maxResults, int firstResult) {
         return findLogin_ObjectEntities(false, maxResults, firstResult);
     }
 
-    //METODO PARA OBTENER TODOS LOS ADMINISTRADORES (MODELO)
+    // METODO PARA OBTENER TODOS LOS ADMINISTRADORES (MODELO)
     private List<Login_Object> findLogin_ObjectEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -139,13 +134,13 @@ public class Login_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA OBTENER UN ADMINISTRADOR (MODELO)
+    // METODO PARA OBTENER UN ADMINISTRADOR (MODELO)
     public Login_Object findLogin_Object(int id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Login_Object.class, id);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL ADMIN", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL ADMINISTRADOR", "INFORMACION", JOptionPane.ERROR_MESSAGE);
             return null;
         }finally {
             em.close();
@@ -153,7 +148,7 @@ public class Login_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA OBTENER EL NUMERO TOTAL DE ADMINISTRADORES (MODELO)
+    // METODO PARA OBTENER EL NUMERO TOTAL DE ADMINISTRADORES (MODELO)
     public int getLogin_ObjectCount() {
         EntityManager em = getEntityManager();
         try {
@@ -163,7 +158,7 @@ public class Login_JPAC_Modelo implements Serializable {
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL TOTAL DE ADMINS", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL TOTAL DE ADMINISTRADORES", "INFORMACION", JOptionPane.ERROR_MESSAGE);
             return 0;
         } finally {
             em.close();

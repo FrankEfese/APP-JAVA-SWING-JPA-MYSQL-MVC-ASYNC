@@ -1,35 +1,36 @@
 package PackageLogin;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class Login_Controlador {
 
-    //OBJETO DEL MODELO DEL LOGIN
-    Login_JPAC_Modelo modeloLogin = new Login_JPAC_Modelo();
+    // MODELO - LOGIN
+    private final Login_JPAC_Modelo modeloLogin = new Login_JPAC_Modelo();
 
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Login_Controlador() {
     }
 
-    //METODO PARA OBTENER TODOS LOS LOGIN (CONTROLADOR)
-    public List<Login_Object> obtenerTodosLogin_C() {
-        return modeloLogin.findLogin_ObjectEntities();
+    // METODO PARA OBTENER TODOS LOS LOGIN (CONTROLADOR)
+    public CompletableFuture<List<Login_Object>> obtenerTodosLogin_C() {
+        return CompletableFuture.supplyAsync(() -> this.modeloLogin.findLogin_ObjectEntities());
     }
 
-    //METODO PARA COMBROBAR LOS CAMPOS DEL LOGIN Y COMPROBAR QUE EL USUARIO EXISTE
-    public boolean comprobarCamposUsuario_C(String correo, String contraseña) {
-        boolean comprobar = false;
-        if ((!correo.isEmpty() && correo.length() < 26) && (!contraseña.isEmpty() && contraseña.length() < 26)) {
-            for (Login_Object aux : obtenerTodosLogin_C()) {
+    // METODO PARA COMBROBAR LOS CAMPOS DEL LOGIN Y COMPROBAR QUE EL USUARIO EXISTE
+    public CompletableFuture<Boolean> comprobarCamposUsuario_C(String correo, String contraseña) {
+                
+        return obtenerTodosLogin_C().thenApply(logins -> {
+            for (Login_Object aux : logins) {
                 if (aux.getCorreo().equals(correo) && aux.getContraseña().equals(contraseña)) {
-                    comprobar = true;
-                    break;
+                    return true;
                 }
             }
-            return comprobar;
-        } else {
-            return comprobar;
-        }
+            return false;
+        }).exceptionally(ex -> {
+            return false;          
+        });
+        
     }
 
 }

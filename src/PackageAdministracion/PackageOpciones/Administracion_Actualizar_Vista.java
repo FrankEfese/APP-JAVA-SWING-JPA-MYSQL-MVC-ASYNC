@@ -187,8 +187,8 @@ public class Administracion_Actualizar_Vista extends javax.swing.JFrame {
                 this.dispose();
                 this.vistaA.cargarDatosTabla("");
                 
-                if(correoActual.equals(Principal_Vista.correoAdmin)){
-                    Principal_Vista.correoAdmin = correo;
+                if(correoActual.equals(Principal_Vista.correoAdministrador)){
+                    Principal_Vista.correoAdministrador = correo;
                 }
 
             } else {

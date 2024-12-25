@@ -435,7 +435,7 @@ public class Administracion_Vista extends javax.swing.JPanel {
                 int idAdmin = (int) this.tablaAdmin.getValueAt(this.tablaAdmin.getSelectedRow(), 0);
                 String correo = (String) this.tablaAdmin.getValueAt(this.tablaAdmin.getSelectedRow(), 1);
 
-                if (correo.equals(Principal_Vista.correoAdmin)) {
+                if (correo.equals(Principal_Vista.correoAdministrador)) {
                     JOptionPane.showMessageDialog(null, "NO PUEDES ELIMINARTE A TI MISMO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     this.controladorAdmin.eliminarAdmin_C(idAdmin);
