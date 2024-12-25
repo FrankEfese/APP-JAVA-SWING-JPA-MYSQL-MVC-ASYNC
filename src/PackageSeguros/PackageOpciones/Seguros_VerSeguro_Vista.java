@@ -1,58 +1,82 @@
 package PackageSeguros.PackageOpciones;
 
 import PackageEmpresas.Empresas_Object;
-import PackageSeguros.Seguros_Object;
+import PackageSeguros.Seguros_Controlador;
 import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
 
 public class Seguros_VerSeguro_Vista extends javax.swing.JFrame {
 
-    //OBJETO SEGURO
-    private Seguros_Object seguro;
+    // VARIABLE ID-SEGURO
+    private int idSeguro;
+    
+    // CONTROLADOR-SEGUROS
+    private final Seguros_Controlador controladorSeguro = new Seguros_Controlador();
 
-    //MODELO DE LA TABLA
+    // MODELO DE LA TABLA
     private DefaultTableModel modelo;
 
-    //CONSTRUCTOR
-    public Seguros_VerSeguro_Vista(Seguros_Object seguro) {
+    // CONSTRUCTOR
+    public Seguros_VerSeguro_Vista(int idSeguro) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.seguro = seguro;
-        //LAMAMOS AL METODO PARA CARGAR LOS DATOS
-        cargarDatos(this.seguro);
+        
+        // APLICAMOS EL ID-SEGURO
+        this.idSeguro = idSeguro;
+        
+        // LAMAMOS AL METODO PARA CARGAR LOS DATOS
+        cargarDatos();
     }
 
-    //METODO PARA CARGAR LOS DATOS DEL SEGURO
-    public void cargarDatos(Seguros_Object seguro) {
-        
-        this.seguro = seguro;
-        
-        //APLICAMOS LAS COLUMNAS DE LA TABLA
-        String columnas[] = {"ID-EMPRESARIAL", "NOMBRE", "CIUDAD"};
-        this.modelo = new DefaultTableModel(columnas, 0);
-
-        //APLICAMOS LA INFORMACION PRINCIPAL DEL SEGURO
-        this.txtNombre.setText("NOMBRE : " + this.seguro.getNombre());
-        this.txtPrecio.setText("PRECIO : " + this.seguro.getPrecio() + " €");        
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        this.txtF_Alta.setText("FECHA ALTA : " + dateFormat.format(this.seguro.getF_alta()));
-
-        //APLICAMOS LAS EMPRESAS ASEGURADAS
-        this.txtTotalEmpresas.setText("* Total de Empresas Aseguradas : " + this.seguro.getEmpresas().size());
-        
-        Object datos[] = new Object[3];
-        for (Empresas_Object aux : this.seguro.getEmpresas()) {
-            datos[0] = aux.getId_empresarial();
-            datos[1] = aux.getNombre();
-            datos[2] = aux.getCiudad();
-            this.modelo.addRow(datos);
-        }
-        
-        this.tablaEmpresas.setModel(this.modelo);
-        
+    // GETTER
+    public int getIdSeguro() {
+        return idSeguro;
     }
 
-    //COMPONENTES DE LA INTERFAZ
+    // SETTER
+    public void setIdSeguro(int idSeguro) {
+        this.idSeguro = idSeguro;
+    }
+
+    // METODO PARA CARGAR LOS DATOS DEL SEGURO
+    public void cargarDatos() {
+        
+        this.controladorSeguro.obtenerSeguro_C(idSeguro).thenAccept(seguro -> {
+        
+            if(seguro != null){
+                
+                // APLICAMOS LAS COLUMNAS DE LA TABLA
+                String columnas[] = {"ID-EMPRESARIAL", "NOMBRE", "CIUDAD"};
+                this.modelo = new DefaultTableModel(columnas, 0);
+
+                // APLICAMOS LA INFORMACION PRINCIPAL DEL SEGURO
+                this.txtNombre.setText("NOMBRE : " + seguro.getNombre());
+                this.txtPrecio.setText("PRECIO : " + seguro.getPrecio() + " €");        
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                this.txtF_Alta.setText("FECHA ALTA : " + dateFormat.format(seguro.getF_alta()));
+
+                // APLICAMOS LAS EMPRESAS ASEGURADAS
+                this.txtTotalEmpresas.setText("* Total de Empresas Aseguradas : " + seguro.getEmpresas().size());
+
+                Object datos[] = new Object[3];
+                for (Empresas_Object aux : seguro.getEmpresas()) {
+                    datos[0] = aux.getId_empresarial();
+                    datos[1] = aux.getNombre();
+                    datos[2] = aux.getCiudad();
+                    this.modelo.addRow(datos);
+                }
+
+                this.tablaEmpresas.setModel(this.modelo);
+
+            }
+                    
+        }).exceptionally(ex ->{       
+            return null;
+        });
+                        
+    }
+
+    // COMPONENTES DE LA INTERFAZ
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

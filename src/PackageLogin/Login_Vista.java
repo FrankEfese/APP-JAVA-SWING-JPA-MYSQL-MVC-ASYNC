@@ -4,11 +4,12 @@ import PackagePrincipal.Principal_Vista;
 import PackageTools.Validaciones;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
 public class Login_Vista extends javax.swing.JFrame {
 
-    // CONTROLADOR - LOGIN
+    // CONTROLADOR-LOGIN
     private final Login_Controlador controladorLogin = new Login_Controlador();
 
     // CONSTRUCTOR
@@ -152,7 +153,7 @@ public class Login_Vista extends javax.swing.JFrame {
 
     //----- METODOS -----
     
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnInicioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseEntered
         this.btnInicio.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnInicio.setBackground(Color.GRAY);
@@ -168,33 +169,33 @@ public class Login_Vista extends javax.swing.JFrame {
             
             if(Validaciones.validarLogin(correo, contraseña)){
                 
-                this.controladorLogin.comprobarCamposUsuario_C(correo, contraseña).thenAccept(existe ->{
+                this.controladorLogin.comprobarUsuario_C(correo, contraseña).thenAccept(existe ->{
                 
                     if (existe || (correo.equals("admin") && contraseña.equals("admin"))) {
                     
-                        JOptionPane.showMessageDialog(null, "ADMINISTRADOR CORRECTO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "ADMINISTRADOR CORRECTO", "LOGIN", JOptionPane.INFORMATION_MESSAGE);
                         Principal_Vista vistaPrincipal = new Principal_Vista(this);
                         this.setVisible(false);
                         vistaPrincipal.setVisible(true);
                         Principal_Vista.correoAdministrador = correo;
                 
                     } else {
-                        JOptionPane.showMessageDialog(null, "ADMINISTRADOR INCORRECTO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "ADMINISTRADOR INCORRECTO", "LOGIN", JOptionPane.ERROR_MESSAGE);
                     }
                 
                 });
                 
             }else{
-                JOptionPane.showMessageDialog(null, "HAS INTRODUCIDO UN DATO ERRONEO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "HAS INTRODUCIDO UN DATO ERRONEO", "LOGIN", JOptionPane.ERROR_MESSAGE);
             }
                                     
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "HAS INTRODUCIDO UN DATO ERRONEO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+        }catch(HeadlessException e){
+            JOptionPane.showMessageDialog(null, "HAS INTRODUCIDO UN DATO ERRONEO", "LOGIN", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_btnInicioActionPerformed
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnInicioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseExited
         this.btnInicio.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnInicioMouseExited

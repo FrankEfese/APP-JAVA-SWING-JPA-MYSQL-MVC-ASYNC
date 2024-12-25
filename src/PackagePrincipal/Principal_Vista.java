@@ -14,10 +14,10 @@ import javax.swing.SwingUtilities;
 
 public class Principal_Vista extends javax.swing.JFrame {
 
-    // VARIABLE CORREO - ADMINISTRADOR
+    // VARIABLE CORREO DEL ADMINISTRADOR
     public static String correoAdministrador = "";
 
-    // VARIABLES - MENUS
+    // VARIABLES-MENUS
     private final Login_Vista vistaLogin;
     private Inicio_Vista vistaInicio;
     private Seguros_Vista vistaSeguro;
@@ -26,7 +26,7 @@ public class Principal_Vista extends javax.swing.JFrame {
     private Productos_Vista vistaProductos;
     private Administracion_Vista vistaAdmin;
 
-    // CARD DONDE SE COLOCARAN LAS VISTAS DE LAS OPCIONES
+    // CARD DONDE SE COLOCARAN LAS VISTAS-MENUS
     private final CardLayout opciones;
 
     // CONSTRUCTOR
@@ -35,10 +35,10 @@ public class Principal_Vista extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.opciones = (CardLayout) this.pnlVistas.getLayout();
         
-        // APLICAMOS LA VISTA LOGIN
+        // APLICAMOS LA VISTA-LOGIN
         this.vistaLogin = vistaLogin;
 
-        // APLICAMOS LA PESTAÑA INICIO COMO LA PRINCIPAL
+        // APLICAMOS LA VISTA-INICIO COMO LA INICIAL
         this.vistaInicio = new Inicio_Vista();
         this.pnlVistas.add(this.vistaInicio, "vistaInicio");
         this.opciones.show(this.pnlVistas, "vistaInicio");
@@ -358,50 +358,51 @@ public class Principal_Vista extends javax.swing.JFrame {
 
     //--- METODOS ---
     
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnInicioPMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioPMouseEntered
         this.btnInicioP.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnInicioP.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnInicioPMouseEntered
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnInicioPMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioPMouseExited
         this.btnInicioP.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnInicioPMouseExited
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnSegurosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSegurosMouseEntered
         this.btnSeguros.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnSeguros.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnSegurosMouseEntered
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnSegurosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSegurosMouseExited
         this.btnSeguros.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnSegurosMouseExited
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnEmpresasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmpresasMouseEntered
         this.btnEmpresas.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnEmpresas.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnEmpresasMouseEntered
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnEmpresasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmpresasMouseExited
         this.btnEmpresas.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnEmpresasMouseExited
 
+    // METODO-ESTETICO
     private void btnEmpleadosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmpleadosMouseEntered
         this.btnEmpleados.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnEmpleados.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnEmpleadosMouseEntered
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnEmpleadosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmpleadosMouseExited
         this.btnEmpleados.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnEmpleadosMouseExited
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnProductosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProductosMouseEntered
         this.btnProductos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnProductos.setBackground(Color.GRAY);
@@ -412,13 +413,13 @@ public class Principal_Vista extends javax.swing.JFrame {
         this.btnProductos.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnProductosMouseExited
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnSalirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseEntered
         this.btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnSalir.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnSalirMouseEntered
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnSalirMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseExited
         this.btnSalir.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnSalirMouseExited
@@ -480,13 +481,13 @@ public class Principal_Vista extends javax.swing.JFrame {
         this.repaint();
     }//GEN-LAST:event_btnInicioPActionPerformed
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnAdminMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAdminMouseEntered
         this.btnAdmin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         this.btnAdmin.setBackground(Color.GRAY);
     }//GEN-LAST:event_btnAdminMouseEntered
 
-    // METODO-ESTETICA
+    // METODO-ESTETICO
     private void btnAdminMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAdminMouseExited
         this.btnAdmin.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnAdminMouseExited

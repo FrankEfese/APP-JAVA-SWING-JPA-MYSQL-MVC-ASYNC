@@ -9,7 +9,7 @@ import PackageSeguros.*;
 
 public class Inicio_Vista extends javax.swing.JPanel {
 
-    //OBJETO DEL CONTROLADOR DE SEGUROS , EMPRESA , EMPLEADO , PRODUCTO y ADMINISTRADOR
+    // CONTROLADOR DE SEGUROS , EMPRESAS , EMPLEADOS , PRODUCTOS y ADMINISTRADORES
     private final Seguros_Controlador controladorSeguro = new Seguros_Controlador();
     private final Empresas_Controlador controladorEmpresa = new Empresas_Controlador();
     private final Empleados_Controlador controladorEmpleado = new Empleados_Controlador();
@@ -17,14 +17,15 @@ public class Inicio_Vista extends javax.swing.JPanel {
     private final Administracion_Controlador controladorAdmin = new Administracion_Controlador();
 
 
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Inicio_Vista() {
         initComponents();
-        //LLAMAMOS AL METODO PARA CARGAR LOS DATOS
+        
+        // LLAMAMOS AL METODO PARA CARGAR LOS DATOS
         cargarDatosTabla();
     }
 
-    //COMPONENTES DE LA INTERFAZ
+    // COMPONENTES DE LA INTERFAZ
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -72,31 +73,31 @@ public class Inicio_Vista extends javax.swing.JPanel {
         lblSeguros.setBackground(new java.awt.Color(255, 255, 255));
         lblSeguros.setFont(new java.awt.Font("Bahnschrift", 1, 24)); // NOI18N
         lblSeguros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSeguros.setText("jLabel4");
+        lblSeguros.setText("TOTAL DE SEGUROS : 0");
         lblSeguros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
         lblEmpresas.setBackground(new java.awt.Color(255, 255, 255));
         lblEmpresas.setFont(new java.awt.Font("Bahnschrift", 1, 24)); // NOI18N
         lblEmpresas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblEmpresas.setText("jLabel4");
+        lblEmpresas.setText("TOTAL DE EMPRESAS : 0");
         lblEmpresas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
         lblEmpleados.setBackground(new java.awt.Color(255, 255, 255));
         lblEmpleados.setFont(new java.awt.Font("Bahnschrift", 1, 24)); // NOI18N
         lblEmpleados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblEmpleados.setText("jLabel4");
+        lblEmpleados.setText("TOTAL DE EMPLEADOS : 0");
         lblEmpleados.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
         lblProductos.setBackground(new java.awt.Color(255, 255, 255));
         lblProductos.setFont(new java.awt.Font("Bahnschrift", 1, 24)); // NOI18N
         lblProductos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblProductos.setText("jLabel4");
+        lblProductos.setText("TOTAL DE PRODUCTOS : 0");
         lblProductos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
         lblAdmin.setBackground(new java.awt.Color(255, 255, 255));
         lblAdmin.setFont(new java.awt.Font("Bahnschrift", 1, 24)); // NOI18N
         lblAdmin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAdmin.setText("jLabel4");
+        lblAdmin.setText("TOTAL DE ADMINISTRADORES : 0");
         lblAdmin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -157,10 +158,10 @@ public class Inicio_Vista extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    //METODO PARA CARGAR LOS DATOS
+    // METODO PARA CARGAR LOS DATOS
     public void cargarDatosTabla() {
         
-        //APLICAMOS EL TOTAL DE SEGUROS, EMPRESA , EMPLEADO , PRODUCTO y ADMINISTRADORES
+        // APLICAMOS EL TOTAL DE SEGUROS, EMPRESAS , EMPLEADOS , PRODUCTOS y ADMINISTRADORES
         this.lblSeguros.setText("TOTAL DE SEGUROS : " + this.controladorSeguro.totalSeguros_C());
         this.lblEmpresas.setText("TOTAL DE EMPRESAS : " + this.controladorEmpresa.totalEmpresas());
         this.lblEmpleados.setText("TOTAL DE EMPLEADOS : " + this.controladorEmpleado.totalEmpleados());

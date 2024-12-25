@@ -12,4 +12,10 @@ public class Validaciones {
                Pattern.matches("^.{1,25}$", contraseña);
         
     }
+    
+    // METODO PARA VALIDAR EL NOMBRE DEL SEGURO
+    public static boolean validarSeguro(String nombre) {
+        return Pattern.matches("^.{1,25}$", nombre);
+        
+    }
 }

@@ -36,7 +36,7 @@ public class Login_Object implements Serializable {
         this.contraseña = contraseña;
     }
 
-    // GETTER AND SETTERS
+    // GETTERS AND SETTERS
     public int getId_login() {
         return id_login;
     }

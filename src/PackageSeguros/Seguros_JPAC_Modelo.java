@@ -19,24 +19,19 @@ import javax.swing.JOptionPane;
 public class Seguros_JPAC_Modelo implements Serializable {
     
     private EntityManagerFactory emf = null;
-
-    //CONSTRUCTOR
-    public Seguros_JPAC_Modelo(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
     
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Seguros_JPAC_Modelo() {
         this.emf = Persistence.createEntityManagerFactory("GESTOR-JPA-PU");
     }
     
-    //GETTER
+    // GETTER
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
     
     
-    //METODO PARA CREAR UN SEGURO (MODELO)
+    // METODO PARA CREAR UN SEGURO (MODELO)
     public void create(Seguros_Object seguros_Object) {
         if (seguros_Object.getEmpresas() == null) {
             seguros_Object.setEmpresas(new ArrayList<Empresas_Object>());
@@ -73,7 +68,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
         }
     }
 
-    //METODO PARA EDITAR UN SEGURO (MODELO)
+    // METODO PARA EDITAR UN SEGURO (MODELO)
     public void edit(Seguros_Object seguros_Object) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -128,7 +123,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA ELIMINAR UN SEGURO (MODELO)
+    // METODO PARA ELIMINAR UN SEGURO (MODELO)
     public void destroy(int id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -160,7 +155,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA OBTENER LOS SEGUROS (MODELO)
+    // METODO PARA OBTENER LOS SEGUROS (MODELO)
     public List<Seguros_Object> findSeguros_ObjectEntities() {
         try{
             return findSeguros_ObjectEntities(true, -1, -1);
@@ -170,12 +165,12 @@ public class Seguros_JPAC_Modelo implements Serializable {
         }
     }
 
-    //METODO PARA OBTENER LOS SEGUROS (MODELO)
+    // METODO PARA OBTENER LOS SEGUROS (MODELO)
     public List<Seguros_Object> findSeguros_ObjectEntities(int maxResults, int firstResult) {
         return findSeguros_ObjectEntities(false, maxResults, firstResult);
     }
 
-    //METODO PARA OBTENER LOS SEGUROS (MODELO)
+    // METODO PARA OBTENER LOS SEGUROS (MODELO)
     private List<Seguros_Object> findSeguros_ObjectEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -193,7 +188,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA OBTENER UN SEGURO (MODELO)
+    // METODO PARA OBTENER UN SEGURO (MODELO)
     public Seguros_Object findSeguros_Object(int id) {
         EntityManager em = getEntityManager();
         try {
@@ -207,7 +202,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA OBTENER EL TOTAL DE SEGUROS (MODELO)
+    // METODO PARA OBTENER EL TOTAL DE SEGUROS (MODELO)
     public int getSeguros_ObjectCount() {
         EntityManager em = getEntityManager();
         try {

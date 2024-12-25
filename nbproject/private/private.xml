@@ -2,6 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageSeguros/Seguros_Vista.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageSeguros/PackageOpciones/Seguros_Actualizar_Vista.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageLogin/Login_JPAC_Modelo.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageSeguros/PackageOpciones/Seguros_Agregar_Vista.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageLogin/Login_Object.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageLogin/Login_Controlador.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageLogin/Login_Vista.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageTools/Validaciones.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageSeguros/Seguros_Object.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageSeguros/Seguros_Controlador.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/PackageSeguros/PackageOpciones/Seguros_VerSeguro_Vista.java</file>
+            <file>file:/C:/Users/franc/Desktop/PROYECTOS/JAVA/APP-JAVA-GESTOR-JPA/GESTOR-JPA/src/Gestor_Jpa/GESTORJPA.java</file>
+        </group>
     </open-files>
 </project-private>
