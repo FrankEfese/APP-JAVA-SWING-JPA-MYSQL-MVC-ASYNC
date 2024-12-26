@@ -39,62 +39,64 @@ public class Empresas_VerEmpresa_Vista extends javax.swing.JFrame {
     // SETTER
     public void setIdEmpresa(int idEmpresa) {
         this.idEmpresa = idEmpresa;
-    }
-    
-    
+    }      
 
     // METODO PARA CARGAR LOS DATOS DE LA EMPRESA
     public void cargarDatos() {
         
         this.controladorEmpresa.obtenerEmpresa_C(idEmpresa).thenAccept(empresa -> {
-        
-            // APLICAMOS LAS COLUMNAS DE LA TABLA EMPLEADOS Y PRODUCTOS
-            String columnas[] = {"DNI", "NOMBRE"};
-            this.modeloE = new DefaultTableModel(columnas, 0);
-
-            String columnas2[] = {"IDENTIFICADOR", "NOMBRE"};
-            this.modeloP = new DefaultTableModel(columnas2, 0);
-
-            // APLICAMOS LA INFORMACION PRINCIPAL DE LA EMPRESA
-            this.txtIdEmp.setText("ID-EMPRESARIAL : " + empresa.getId_empresarial());
-            this.txtNombre.setText("NOMBRE : " + empresa.getNombre());
-            this.txtCiudad.setText("CIUDAD : " + empresa.getCiudad());
-
-            if(empresa.getSeguros_id_seguro() != null){
-                this.txtSeguro.setText("SEGURO : " + empresa.getSeguros_id_seguro().getNombre());
-            }else{
-               this.txtSeguro.setText("SEGURO : SIN SEGURO"); 
-            }
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            this.txtF_Alta.setText("FECHA ALTA : " + dateFormat.format(empresa.getF_alta()));
-
-            // APLICAMOS LOS EMPLEADOS
-            List<Empleados_Object> empleados = empresa.getEmpleados();
-            this.txtTotalEmpleados.setText("* Total de Empleados : " + empleados.size());
-
-            Object datos[] = new Object[2];
-            for (Empleados_Object aux : empleados) {
-                datos[0] = aux.getDni();
-                datos[1] = aux.getNombre();
-                this.modeloE.addRow(datos);
-            }
-
-            this.tablaEmpleados.setModel(this.modeloE);
-
-            // APLICAMOS LOS PRODUCTOS
-            List<Productos_Object> productos = empresa.getProductos();
-            this.txtTotalProductos.setText("* Total de Productos : " + productos.size());
-
-            Object datos2[] = new Object[2];
-            for (Productos_Object aux : productos) {
-                datos2[0] = aux.getIdentificador();
-                datos2[1] = aux.getNombre();
-                this.modeloP.addRow(datos2);
-            }
-
-            this.tablaProductos.setModel(this.modeloP);
             
+            if(empresa != null){
+                
+                // APLICAMOS LAS COLUMNAS DE LA TABLA EMPLEADOS Y PRODUCTOS
+                String columnas[] = {"DNI", "NOMBRE"};
+                this.modeloE = new DefaultTableModel(columnas, 0);
+
+                String columnas2[] = {"IDENTIFICADOR", "NOMBRE"};
+                this.modeloP = new DefaultTableModel(columnas2, 0);
+
+                // APLICAMOS LA INFORMACION PRINCIPAL DE LA EMPRESA
+                this.txtIdEmp.setText("ID-EMPRESARIAL : " + empresa.getId_empresarial());
+                this.txtNombre.setText("NOMBRE : " + empresa.getNombre());
+                this.txtCiudad.setText("CIUDAD : " + empresa.getCiudad());
+
+                if(empresa.getSeguros_id_seguro() != null){
+                    this.txtSeguro.setText("SEGURO : " + empresa.getSeguros_id_seguro().getNombre());
+                }else{
+                   this.txtSeguro.setText("SEGURO : SIN SEGURO"); 
+                }
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                this.txtF_Alta.setText("FECHA ALTA : " + dateFormat.format(empresa.getF_alta()));
+
+                // APLICAMOS LOS EMPLEADOS
+                List<Empleados_Object> empleados = empresa.getEmpleados();
+                this.txtTotalEmpleados.setText("* Total de Empleados : " + empleados.size());
+
+                Object datos[] = new Object[2];
+                for (Empleados_Object aux : empleados) {
+                    datos[0] = aux.getDni();
+                    datos[1] = aux.getNombre();
+                    this.modeloE.addRow(datos);
+                }
+
+                this.tablaEmpleados.setModel(this.modeloE);
+
+                // APLICAMOS LOS PRODUCTOS
+                List<Productos_Object> productos = empresa.getProductos();
+                this.txtTotalProductos.setText("* Total de Productos : " + productos.size());
+
+                Object datos2[] = new Object[2];
+                for (Productos_Object aux : productos) {
+                    datos2[0] = aux.getIdentificador();
+                    datos2[1] = aux.getNombre();
+                    this.modeloP.addRow(datos2);
+                }
+
+                this.tablaProductos.setModel(this.modeloP);
+
+            }
+                    
         }).exceptionally(ex ->{       
             return null;
         });

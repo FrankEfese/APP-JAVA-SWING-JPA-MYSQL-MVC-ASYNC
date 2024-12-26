@@ -84,9 +84,9 @@ public class Empresas_JPAC_Modelo implements Serializable {
                 }
             }
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "EMPRESA AGREGADA", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "EMPRESA AGREGADA", "EMPRESAS-JPAC", JOptionPane.INFORMATION_MESSAGE);
         } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL AGREGAR LA EMPRESA", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL AGREGAR LA EMPRESA", "EMPRESAS-JPAC", JOptionPane.ERROR_MESSAGE);
         } finally {
             if (em != null) {
                 em.close();
@@ -169,7 +169,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
                 }
             }
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "EMPRESA ACTUALIZADA", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "EMPRESA ACTUALIZADA", "EMPRESAS-JPAC", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -178,7 +178,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
                     throw new NonexistentEntityException("The empresas_Object with id " + id + " no longer exists.");
                 }
             }
-            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR LA EMPRESA", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR LA EMPRESA", "EMPRESAS-JPAC", JOptionPane.ERROR_MESSAGE);
             throw ex;
         } finally {
             if (em != null) {
@@ -217,9 +217,9 @@ public class Empresas_JPAC_Modelo implements Serializable {
             }
             em.remove(empresas_Object);
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "EMPRESA ELIMINADA CORRECTAMENTE", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "EMPRESA ELIMINADA CORRECTAMENTE", "EMPRESAS-JPAC", JOptionPane.INFORMATION_MESSAGE);
         } catch (NonexistentEntityException | HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL ELIMINAR LA EMPRESA", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL ELIMINAR LA EMPRESA", "EMPRESAS-JPAC", JOptionPane.ERROR_MESSAGE);
         } finally {
             if (em != null) {
                 em.close();
@@ -232,7 +232,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
         try {
             return findEmpresas_ObjectEntities(true, -1, -1);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LAS EMPRESAS", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LAS EMPRESAS", "EMPRESAS-JPAC", JOptionPane.ERROR_MESSAGE);
             return new ArrayList<>();
         }
     }
@@ -265,7 +265,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
         try {
             return em.find(Empresas_Object.class, id);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LA EMPRESA", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LA EMPRESA", "EMPRESAS-JPAC", JOptionPane.ERROR_MESSAGE);
             return null;
         } finally {
             em.close();
@@ -282,7 +282,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL TOTAL DE EMPRESAS", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL TOTAL DE EMPRESAS", "EMPRESAS-JPAC", JOptionPane.ERROR_MESSAGE);
             return 0;
         } finally {
             em.close();

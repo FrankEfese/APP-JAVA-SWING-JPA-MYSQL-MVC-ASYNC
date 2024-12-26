@@ -72,7 +72,6 @@ public class Empresas_Controlador {
             });       
     }
 
-
     // METODO PARA OBTENER FILA SELECCIONADA DE LA TABLA
     public CompletableFuture<Integer> obtenerFilaTabla(Empresas_Object empresa) {
         if (empresa != null) {

@@ -57,10 +57,10 @@ public class Seguros_JPAC_Modelo implements Serializable {
                 }
             }
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "SEGURO AGREGADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "SEGURO AGREGADO", "SEGUROS-JPAC", JOptionPane.INFORMATION_MESSAGE);
             
         }catch(HeadlessException e){
-            JOptionPane.showMessageDialog(null, "ERROR AL AGREGAR EL SEGURO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL AGREGAR EL SEGURO", "SEGUROS-JPAC", JOptionPane.ERROR_MESSAGE);
         } finally {
             if (em != null) {
                 em.close();
@@ -103,7 +103,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
                 }
             }
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "SEGURO ACTUALIZADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "SEGURO ACTUALIZADO", "SEGUROS-JPAC", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
@@ -112,7 +112,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
                     throw new NonexistentEntityException("The seguros_Object with id " + id + " no longer exists.");
                 }
             }
-            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR EL SEGURO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR EL SEGURO", "SEGUROS-JPAC", JOptionPane.ERROR_MESSAGE);
             throw ex;
             
         } finally {
@@ -143,10 +143,10 @@ public class Seguros_JPAC_Modelo implements Serializable {
             }
             em.remove(seguros_Object);
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "SEGURO ELIMINADO CORRECTAMENTE", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "SEGURO ELIMINADO CORRECTAMENTE", "SEGUROS-JPAC", JOptionPane.INFORMATION_MESSAGE);
             
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR AL ELIMINAR EL SEGURO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL ELIMINAR EL SEGURO", "SEGUROS-JPAC", JOptionPane.ERROR_MESSAGE);
         } finally {
             if (em != null) {
                 em.close();
@@ -160,7 +160,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
         try{
             return findSeguros_ObjectEntities(true, -1, -1);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LOS SEGUROS", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LOS SEGUROS", "SEGUROS-JPAC", JOptionPane.ERROR_MESSAGE);
             return new ArrayList<>();
         }
     }
@@ -194,7 +194,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
         try {
             return em.find(Seguros_Object.class, id);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL SEGURO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL SEGURO", "SEGUROS-JPAC", JOptionPane.ERROR_MESSAGE);
             return null;
         } finally {
             em.close();
@@ -212,7 +212,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL TOTAL DE SEGUROS", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL TOTAL DE SEGUROS", "SEGUROS-JPAC", JOptionPane.ERROR_MESSAGE);
             return 0;
         } finally {
             em.close();

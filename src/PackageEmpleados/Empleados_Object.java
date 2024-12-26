@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "empleados")
 public class Empleados_Object implements Serializable {
 
+    // ATRIBUTOS
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id_empleado")
@@ -34,11 +35,11 @@ public class Empleados_Object implements Serializable {
     @JoinColumn(name = "empresas_id_empresa", nullable = true)
     private Empresas_Object empresas_id_empresa;
 
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Empleados_Object() {
     }
 
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Empleados_Object(int id_empleado, String dni, String nombre, int edad, int telefono, Date f_alta, Empresas_Object empresas_id_empresa) {
         this.id_empleado = id_empleado;
         this.dni = dni;
@@ -49,7 +50,7 @@ public class Empleados_Object implements Serializable {
         this.empresas_id_empresa = empresas_id_empresa;
     }
 
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Empleados_Object(String dni, String nombre, int edad, int telefono, Date f_alta, Empresas_Object empresas_id_empresa) {
         this.dni = dni;
         this.nombre = nombre;
@@ -59,7 +60,7 @@ public class Empleados_Object implements Serializable {
         this.empresas_id_empresa = empresas_id_empresa;
     }
 
-    //GETTERS AND SETTERS
+    // GETTERS AND SETTERS
     public int getId_empleado() {
         return id_empleado;
     }
@@ -116,7 +117,7 @@ public class Empleados_Object implements Serializable {
         this.empresas_id_empresa = empresas_id_empresa;
     }
 
-    //TO STRING
+    // TO STRING
     @Override
     public String toString() {
         return "Empleados_Object{" + "id_empleado=" + id_empleado + ", dni=" + dni + ", nombre=" + nombre + ", edad=" + edad + ", telefono=" + telefono + ", f_alta=" + f_alta + ", empresas_id_empresa=" + empresas_id_empresa + '}';

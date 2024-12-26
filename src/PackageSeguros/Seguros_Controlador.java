@@ -1,6 +1,5 @@
 package PackageSeguros;
 
-
 import PackageExceptions.NonexistentEntityException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

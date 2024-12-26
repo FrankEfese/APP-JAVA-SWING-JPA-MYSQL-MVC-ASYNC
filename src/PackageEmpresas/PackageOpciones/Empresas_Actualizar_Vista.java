@@ -61,9 +61,7 @@ public class Empresas_Actualizar_Vista extends javax.swing.JFrame {
 
     public void setIndice(int indice) {
         this.indice = indice;
-    }
-    
-    
+    }    
 
     // METODO PARA CARGAR LOS SEGUROS EN LA TABLA Y LOS DATOS DE LA EMPRESA
     public void cargarDatos() {
@@ -314,17 +312,20 @@ public class Empresas_Actualizar_Vista extends javax.swing.JFrame {
 
                             if (this.tablaSeguros.getSelectedRow() != -1) {
                                 
-                                this.controladorSeguro.obtenerSeguro_C((int) this.tablaSeguros.getValueAt(this.tablaSeguros.getSelectedRow(), 0)).thenAccept(seguro -> {                               
-                                    this.empresa.setId_empresarial(idEmp);
-                                    this.empresa.setNombre(nombre);
-                                    this.empresa.setCiudad(ciudad);
-                                    this.empresa.setSeguros_id_seguro(seguro);
-                                    this.controladorEmpresa.actualizarEmpresa_C(this.empresa);
-                                    this.txtIdEmp.setText("");
-                                    this.txtNombre.setText("");
-                                    this.txtCiudad.setText("");
-                                    this.dispose();
-                                    this.vistaE.cargarDatosTabla("");                                  
+                                this.controladorSeguro.obtenerSeguro_C((int) this.tablaSeguros.getValueAt(this.tablaSeguros.getSelectedRow(), 0)).thenAccept(seguro -> {
+                                    if(seguro != null){
+                                        this.empresa.setId_empresarial(idEmp);
+                                        this.empresa.setNombre(nombre);
+                                        this.empresa.setCiudad(ciudad);
+                                        this.empresa.setSeguros_id_seguro(seguro);
+                                        this.controladorEmpresa.actualizarEmpresa_C(this.empresa);
+                                        this.txtIdEmp.setText("");
+                                        this.txtNombre.setText("");
+                                        this.txtCiudad.setText("");
+                                        this.dispose();
+                                        this.vistaE.cargarDatosTabla("");
+                                    }
+                                                                      
                                 }).exceptionally(ex ->{
                                     return null;
                                 });

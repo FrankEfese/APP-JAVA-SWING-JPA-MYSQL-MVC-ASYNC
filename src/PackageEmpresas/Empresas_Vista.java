@@ -23,8 +23,7 @@ public class Empresas_Vista extends javax.swing.JPanel {
     private Empresas_VerEmpresa_Vista verEmpresaVista;
     private Empresas_Agregar_Vista agregarEmpresaVista;
     private Empresas_Actualizar_Vista actualizarEmpresasVista;
-    
-    
+       
     // CONSTRUCTOR
     public Empresas_Vista() {
         initComponents();
