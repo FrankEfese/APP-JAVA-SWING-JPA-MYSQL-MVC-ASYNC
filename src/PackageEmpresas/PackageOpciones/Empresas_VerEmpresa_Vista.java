@@ -1,7 +1,7 @@
 package PackageEmpresas.PackageOpciones;
 
 import PackageEmpleados.Empleados_Object;
-import PackageEmpresas.Empresas_Object;
+import PackageEmpresas.Empresas_Controlador;
 import PackageProductos.Productos_Object;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -9,77 +9,99 @@ import javax.swing.table.DefaultTableModel;
 
 public class Empresas_VerEmpresa_Vista extends javax.swing.JFrame {
 
-    //OBJETO EMPRESA
-    private Empresas_Object empresa;
+    // VARIABLE ID-EMPRESA
+    private int idEmpresa;
+    
+    // CONTROLADOR-EMPRESA
+    private final Empresas_Controlador controladorEmpresa = new Empresas_Controlador();
 
-    //MODELOS DE LA TABLA EMPLEADOS Y PRODUCTOS
+    // MODELOS DE LA TABLA EMPLEADOS Y PRODUCTOS
     private DefaultTableModel modeloE;
     private DefaultTableModel modeloP;
 
-    //CONSTRUCTOR
-    public Empresas_VerEmpresa_Vista(Empresas_Object empresa) {
+    // CONSTRUCTOR
+    public Empresas_VerEmpresa_Vista(int idEmpresa) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.empresa = empresa;
-        //LAMAMOS AL METODO PARA CARGAR LOS DATOS
-        cargarDatos(this.empresa);
+        
+        // APLICAMOS EL ID-EMPRESA
+        this.idEmpresa = idEmpresa;        
+        
+        // LAMAMOS AL METODO PARA CARGAR LOS DATOS
+        cargarDatos();
     }
 
-    //METODO PARA CARGAR LOS DATOS DE LA EMPRESA
-    public void cargarDatos(Empresas_Object empresa) {
-        
-        this.empresa = empresa;
-        
-        //APLICAMOS LAS COLUMNAS DE LA TABLA EMPLEADOS Y PRODUCTOS
-        String columnas[] = {"DNI", "NOMBRE"};
-        this.modeloE = new DefaultTableModel(columnas, 0);
-        
-        String columnas2[] = {"IDENTIFICADOR", "NOMBRE"};
-        this.modeloP = new DefaultTableModel(columnas2, 0);
-
-        //APLICAMOS LA INFORMACION PRINCIPAL DE LA EMPRESA
-        this.txtIdEmp.setText("ID-EMPRESARIAL : " + this.empresa.getId_empresarial());
-        this.txtNombre.setText("NOMBRE : " + this.empresa.getNombre());
-        this.txtCiudad.setText("CIUDAD : " + this.empresa.getCiudad());
-               
-        if(this.empresa.getSeguros_id_seguro() != null){
-            this.txtSeguro.setText("SEGURO : " + this.empresa.getSeguros_id_seguro().getNombre());
-        }else{
-           this.txtSeguro.setText("SEGURO : SIN SEGURO"); 
-        }
-        
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        this.txtF_Alta.setText("FECHA ALTA : " + dateFormat.format(this.empresa.getF_alta()));
-
-        //APLICAMOS LOS EMPLEADOS
-        List<Empleados_Object> empleados = this.empresa.getEmpleados();
-        this.txtTotalEmpleados.setText("* Total de Empleados : " + empleados.size());
-        
-        Object datos[] = new Object[2];
-        for (Empleados_Object aux : empleados) {
-            datos[0] = aux.getDni();
-            datos[1] = aux.getNombre();
-            this.modeloE.addRow(datos);
-        }
-        
-        this.tablaEmpleados.setModel(this.modeloE);
-        
-        //APLICAMOS LOS PRODUCTOS
-        List<Productos_Object> productos = this.empresa.getProductos();
-        this.txtTotalProductos.setText("* Total de Productos : " + productos.size());
-        
-        Object datos2[] = new Object[2];
-        for (Productos_Object aux : productos) {
-            datos2[0] = aux.getIdentificador();
-            datos2[1] = aux.getNombre();
-            this.modeloP.addRow(datos2);
-        }
-        
-        this.tablaProductos.setModel(this.modeloP);
-        
+    // GETTER
+    public int getIdEmpresa() {
+        return idEmpresa;
     }
 
-    //COMPONENTES DE LA INTERFAZ
+    // SETTER
+    public void setIdEmpresa(int idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+    
+    
+
+    // METODO PARA CARGAR LOS DATOS DE LA EMPRESA
+    public void cargarDatos() {
+        
+        this.controladorEmpresa.obtenerEmpresa_C(idEmpresa).thenAccept(empresa -> {
+        
+            // APLICAMOS LAS COLUMNAS DE LA TABLA EMPLEADOS Y PRODUCTOS
+            String columnas[] = {"DNI", "NOMBRE"};
+            this.modeloE = new DefaultTableModel(columnas, 0);
+
+            String columnas2[] = {"IDENTIFICADOR", "NOMBRE"};
+            this.modeloP = new DefaultTableModel(columnas2, 0);
+
+            // APLICAMOS LA INFORMACION PRINCIPAL DE LA EMPRESA
+            this.txtIdEmp.setText("ID-EMPRESARIAL : " + empresa.getId_empresarial());
+            this.txtNombre.setText("NOMBRE : " + empresa.getNombre());
+            this.txtCiudad.setText("CIUDAD : " + empresa.getCiudad());
+
+            if(empresa.getSeguros_id_seguro() != null){
+                this.txtSeguro.setText("SEGURO : " + empresa.getSeguros_id_seguro().getNombre());
+            }else{
+               this.txtSeguro.setText("SEGURO : SIN SEGURO"); 
+            }
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            this.txtF_Alta.setText("FECHA ALTA : " + dateFormat.format(empresa.getF_alta()));
+
+            // APLICAMOS LOS EMPLEADOS
+            List<Empleados_Object> empleados = empresa.getEmpleados();
+            this.txtTotalEmpleados.setText("* Total de Empleados : " + empleados.size());
+
+            Object datos[] = new Object[2];
+            for (Empleados_Object aux : empleados) {
+                datos[0] = aux.getDni();
+                datos[1] = aux.getNombre();
+                this.modeloE.addRow(datos);
+            }
+
+            this.tablaEmpleados.setModel(this.modeloE);
+
+            // APLICAMOS LOS PRODUCTOS
+            List<Productos_Object> productos = empresa.getProductos();
+            this.txtTotalProductos.setText("* Total de Productos : " + productos.size());
+
+            Object datos2[] = new Object[2];
+            for (Productos_Object aux : productos) {
+                datos2[0] = aux.getIdentificador();
+                datos2[1] = aux.getNombre();
+                this.modeloP.addRow(datos2);
+            }
+
+            this.tablaProductos.setModel(this.modeloP);
+            
+        }).exceptionally(ex ->{       
+            return null;
+        });
+                
+    }
+
+    // COMPONENTES DE LA INTERFAZ
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

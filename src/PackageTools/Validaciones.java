@@ -18,4 +18,13 @@ public class Validaciones {
         return Pattern.matches("^.{1,25}$", nombre);
         
     }
+    
+    
+    // METODO PARA VALIDAR LOS CAMPOS DE ID-EMP , NOMBRE Y CIUDAD
+    public static boolean validarEmpresa(String idEmp, String nombre, String ciudad) {
+        return Pattern.matches("^.{1,25}$", idEmp) && 
+               Pattern.matches("^.{1,25}$", nombre)&& 
+               Pattern.matches("^.{1,25}$", ciudad);
+        
+    }
 }

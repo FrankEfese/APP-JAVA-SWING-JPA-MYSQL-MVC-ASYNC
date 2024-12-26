@@ -56,8 +56,7 @@ public class Seguros_Controlador {
     // METODO PARA OBTENER EL TOTAL DE SEGUROS (CONTROLADOR)
     public CompletableFuture<Integer> totalSeguros_C(){
         return CompletableFuture.supplyAsync(() -> this.modeloSeguros.getSeguros_ObjectCount());
-    }
-    
+    }    
 
     // METODO PARA COMPROBAR LA EXISTENCIA DEL NOMBRE DEL SEGURO
     public CompletableFuture<Boolean> nombreExistente(String nombre) {
@@ -75,21 +74,23 @@ public class Seguros_Controlador {
     }
 
     // METODO PARA OBTENER FILA SELECCIONADA DE LA TABLA
-    public int obtenerFilaTabla(Seguros_Object seguro) {
-        int indice = -1;
+    public CompletableFuture<Integer> obtenerFilaTabla(Seguros_Object seguro) {
         if (seguro != null) {
-            List<Seguros_Object> lista = obtenerTodosSeguros_C();
-            for (Seguros_Object aux : lista) {
-                if (aux.getId_seguro() == seguro.getId_seguro()) {
-                    indice = lista.indexOf(aux);
-                    break;
-                }
-            }
-            return indice;
+            
+            return obtenerTodosSeguros_C().thenApply(seguros -> {           
+                for (Seguros_Object aux : seguros) {
+                    if (aux.getId_seguro() == seguro.getId_seguro()) {
+                        return seguros.indexOf(aux);
+                    }
+                }               
+                return -1;            
+            }).exceptionally(ex -> {
+                return -1;
+            });
+            
         } else {
-            return indice;
+            return CompletableFuture.completedFuture(-1);
         }
-
     }
 
 }

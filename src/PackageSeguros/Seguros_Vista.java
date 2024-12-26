@@ -459,7 +459,6 @@ public class Seguros_Vista extends javax.swing.JPanel {
 
     // METODO PARA ABRIR LA PESTAÑA QUE PERMITE ACTUALIZAR LOS SEGUROS
     private void btnActualizarSeguroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarSeguroActionPerformed
-
         if (this.tablaSeguros.getSelectedRow() != -1) {
             int idSeguro = (int) this.tablaSeguros.getValueAt(this.tablaSeguros.getSelectedRow(), 0);
             

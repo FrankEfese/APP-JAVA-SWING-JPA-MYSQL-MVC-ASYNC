@@ -21,22 +21,17 @@ public class Empresas_JPAC_Modelo implements Serializable {
 
     private EntityManagerFactory emf = null;
 
-    //CONSTRUCTOR
-    public Empresas_JPAC_Modelo(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Empresas_JPAC_Modelo() {
         this.emf = Persistence.createEntityManagerFactory("GESTOR-JPA-PU");
     }
 
-    //GETTER
+    // GETTER
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    //METODO PARA CREAR UNA EMPRESA (MODELO)
+    // METODO PARA CREAR UNA EMPRESA (MODELO)
     public void create(Empresas_Object empresas_Object) {
         if (empresas_Object.getEmpleados() == null) {
             empresas_Object.setEmpleados(new ArrayList<Empleados_Object>());
@@ -99,7 +94,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
         }
     }
 
-    //METODO PARA EDITAR UNA EMPRESA (MODELO)
+    // METODO PARA EDITAR UNA EMPRESA (MODELO)
     public void edit(Empresas_Object empresas_Object) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -192,7 +187,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
         }
     }
 
-    //METODO PARA ELIMINAR UNA EMPRESA (MODELO)
+    // METODO PARA ELIMINAR UNA EMPRESA (MODELO)
     public void destroy(int id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -232,7 +227,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
         }
     }
 
-    //METODO PARA OBTENER TODAS LAS EMPRESAS (MODELO)
+    // METODO PARA OBTENER TODAS LAS EMPRESAS (MODELO)
     public List<Empresas_Object> findEmpresas_ObjectEntities() {
         try {
             return findEmpresas_ObjectEntities(true, -1, -1);
@@ -242,12 +237,12 @@ public class Empresas_JPAC_Modelo implements Serializable {
         }
     }
 
-    //METODO PARA OBTENER TODAS LAS EMPRESAS (MODELO)
+    // METODO PARA OBTENER TODAS LAS EMPRESAS (MODELO)
     public List<Empresas_Object> findEmpresas_ObjectEntities(int maxResults, int firstResult) {
         return findEmpresas_ObjectEntities(false, maxResults, firstResult);
     }
 
-    //METODO PARA OBTENER TODAS LAS EMPRESAS (MODELO)
+    // METODO PARA OBTENER TODAS LAS EMPRESAS (MODELO)
     private List<Empresas_Object> findEmpresas_ObjectEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -264,7 +259,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
         }
     }
 
-    //METODO PARA OBTENER UNA EMPRESA (MODELO)
+    // METODO PARA OBTENER UNA EMPRESA (MODELO)
     public Empresas_Object findEmpresas_Object(int id) {
         EntityManager em = getEntityManager();
         try {
@@ -277,7 +272,7 @@ public class Empresas_JPAC_Modelo implements Serializable {
         }
     }
 
-    //METODO PARA OBTENER EL TOTAL DE EMPRESAS (MODELO)
+    // METODO PARA OBTENER EL TOTAL DE EMPRESAS (MODELO)
     public int getEmpresas_ObjectCount() {
         EntityManager em = getEntityManager();
         try {
