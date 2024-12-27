@@ -538,16 +538,20 @@ public class Empleados_Vista extends javax.swing.JPanel {
                 if (empleado != null) {
                     this.controladorEmpresas.obtenerFilaTabla(empleado.getEmpresas_id_empresa()).thenAccept(indice -> {
                     
-                        if (this.actualizarEmpleadoVista == null) {
-                            this.actualizarEmpleadoVista = new Empleados_Actualizar_Vista(this, empleado, indice);
-                            this.actualizarEmpleadoVista.setVisible(true);
-                        } else {
-                            this.actualizarEmpleadoVista.setEmpleado(empleado);
-                            this.actualizarEmpleadoVista.setIndice(indice);
-                            this.actualizarEmpleadoVista.cargarDatos();
-                            this.actualizarEmpleadoVista.setVisible(true);
+                        if(indice != -1){
+                            
+                            if (this.actualizarEmpleadoVista == null) {
+                                this.actualizarEmpleadoVista = new Empleados_Actualizar_Vista(this, empleado, indice);
+                                this.actualizarEmpleadoVista.setVisible(true);
+                            } else {
+                                this.actualizarEmpleadoVista.setEmpleado(empleado);
+                                this.actualizarEmpleadoVista.setIndice(indice);
+                                this.actualizarEmpleadoVista.cargarDatos();
+                                this.actualizarEmpleadoVista.setVisible(true);
+                            }
+                            
                         }
-                        
+                                                
                     });                   
                 }           
             });

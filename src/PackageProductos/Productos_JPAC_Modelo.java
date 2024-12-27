@@ -20,23 +20,17 @@ public class Productos_JPAC_Modelo implements Serializable {
     
     private EntityManagerFactory emf = null;
 
-    //CONSTRUCTOR
-    public Productos_JPAC_Modelo(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-
-    //CONSTRUCTOR
+    // CONSTRUCTOR
     public Productos_JPAC_Modelo() {
         this.emf = Persistence.createEntityManagerFactory("GESTOR-JPA-PU");
     }
     
-    //GETTER
+    // GETTER
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
     
-    //METODO PARA GUARDAR UN PRODUCTO (MODELO)
+    // METODO PARA GUARDAR UN PRODUCTO (MODELO)
     public void create(Productos_Object productos_Object) {
         EntityManager em = null;
         try {
@@ -53,10 +47,10 @@ public class Productos_JPAC_Modelo implements Serializable {
                 empresas_id_empresa_p = em.merge(empresas_id_empresa_p);
             }
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "PRODUCTO AGREGADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "PRODUCTO AGREGADO", "PRODUCTOS-JPAC", JOptionPane.INFORMATION_MESSAGE);
             
         } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL AGREGAR EL PRODUCTO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL AGREGAR EL PRODUCTO", "PRODUCTOS-JPAC", JOptionPane.ERROR_MESSAGE);
         }finally {
             if (em != null) {
                 em.close();
@@ -65,7 +59,7 @@ public class Productos_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA ACTUALIZAR UN PRODUCTO (MODELO)
+    // METODO PARA ACTUALIZAR UN PRODUCTO (MODELO)
     public void edit(Productos_Object productos_Object) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -88,7 +82,7 @@ public class Productos_JPAC_Modelo implements Serializable {
                 empresas_id_empresa_pNew = em.merge(empresas_id_empresa_pNew);
             }
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "PRODUCTO ACTUALIZADO", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "PRODUCTO ACTUALIZADO", "PRODUCTOS-JPAC", JOptionPane.INFORMATION_MESSAGE);
             
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -98,7 +92,7 @@ public class Productos_JPAC_Modelo implements Serializable {
                     throw new NonexistentEntityException("The productos_Object with id " + id + " no longer exists.");
                 }
             }
-            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR EL PRODUCTO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR EL PRODUCTO", "PRODUCTOS-JPAC", JOptionPane.ERROR_MESSAGE);
             throw ex;
         } finally {
             if (em != null) {
@@ -108,7 +102,7 @@ public class Productos_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA ELIMINAR UN PRODUCTO (MODELO)
+    // METODO PARA ELIMINAR UN PRODUCTO (MODELO)
     public void destroy(int id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -128,9 +122,9 @@ public class Productos_JPAC_Modelo implements Serializable {
             }
             em.remove(productos_Object);
             em.getTransaction().commit();
-            JOptionPane.showMessageDialog(null, "PRODUCTO ELIMINADO CORRECTAMENTE", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "PRODUCTO ELIMINADO CORRECTAMENTE", "PRODUCTOS-JPAC", JOptionPane.INFORMATION_MESSAGE);
         } catch (NonexistentEntityException | HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL ELIMINAR EL PRODUCTO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL ELIMINAR EL PRODUCTO", "PRODUCTOS-JPAC", JOptionPane.ERROR_MESSAGE);
         }finally {
             if (em != null) {
                 em.close();
@@ -139,25 +133,25 @@ public class Productos_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA OBTENER LOS PRODUCTOS (MODELO)
+    // METODO PARA OBTENER LOS PRODUCTOS (MODELO)
     public List<Productos_Object> findProductos_ObjectEntities() {
         try{
             return findProductos_ObjectEntities(true, -1, -1);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LOS PRODUCTOS", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER LOS PRODUCTOS", "PRODUCTOS-JPAC", JOptionPane.ERROR_MESSAGE);
             return new ArrayList<>();
         }
         
     }
 
     
-    //METODO PARA OBTENER LOS PRODUCTOS (MODELO)
+    // METODO PARA OBTENER LOS PRODUCTOS (MODELO)
     public List<Productos_Object> findProductos_ObjectEntities(int maxResults, int firstResult) {
         return findProductos_ObjectEntities(false, maxResults, firstResult);
     }
 
     
-    //METODO PARA OBTENER LOS PRODUCTOS (MODELO)
+    // METODO PARA OBTENER LOS PRODUCTOS (MODELO)
     private List<Productos_Object> findProductos_ObjectEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -175,13 +169,13 @@ public class Productos_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA OBTENER UN PRODUCTO (MODELO)
+    // METODO PARA OBTENER UN PRODUCTO (MODELO)
     public Productos_Object findProductos_Object(int id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Productos_Object.class, id);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL PRODUCTO", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL PRODUCTO", "PRODUCTOS-JPAC", JOptionPane.ERROR_MESSAGE);
             return null;
         }finally {
             em.close();
@@ -189,7 +183,7 @@ public class Productos_JPAC_Modelo implements Serializable {
     }
 
     
-    //METODO PARA OBTENER EL TOTAL DE PRODUCTOS (MODELO)
+    // METODO PARA OBTENER EL TOTAL DE PRODUCTOS (MODELO)
     public int getProductos_ObjectCount() {
         EntityManager em = getEntityManager();
         try {
@@ -199,7 +193,7 @@ public class Productos_JPAC_Modelo implements Serializable {
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL TOTAL DE PRODUCTOS", "INFORMACION", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR AL OBTENER EL TOTAL DE PRODUCTOS", "PRODUCTOS-JPAC", JOptionPane.ERROR_MESSAGE);
             return 0;
         } finally {
             em.close();

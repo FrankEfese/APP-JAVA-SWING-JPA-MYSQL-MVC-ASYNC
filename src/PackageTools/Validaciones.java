@@ -33,5 +33,13 @@ public class Validaciones {
                Pattern.matches("^.{1,25}$", nombre) &&
                Pattern.matches("^[0-9]{9}$", telefono);
     }
+    
+    // METODO PARA VALIDAR LOS CAMPOS DE IDENTIFICADOR , NOMBRE Y CATEGORIA DEL PRODUCTO
+    public static boolean validarProducto(String identificador, String nombre, String categoria) {
+        return Pattern.matches("^.{1,25}$", identificador) && 
+               Pattern.matches("^.{1,25}$", nombre)&& 
+               !categoria.equals("--- SELECCIONAR ---");
+        
+    }
 
 }

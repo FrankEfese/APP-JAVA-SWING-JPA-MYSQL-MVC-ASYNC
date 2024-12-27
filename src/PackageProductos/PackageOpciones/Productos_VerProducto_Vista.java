@@ -1,40 +1,64 @@
 package PackageProductos.PackageOpciones;
 
-import PackageProductos.Productos_Object;
+import PackageProductos.Productos_Controlador;
 import java.text.SimpleDateFormat;
 
 public class Productos_VerProducto_Vista extends javax.swing.JFrame {
 
-    //OBJETO PRODUCTO
-    Productos_Object producto;
+    // VARIABLE ID-PRODUCTO
+    private int idProducto;
+    
+    // CONTROLADOR-PRODUCTOS
+    private final Productos_Controlador controladorProductos = new Productos_Controlador();
 
-    //CONSTRUCTOR
-    public Productos_VerProducto_Vista(Productos_Object producto) {
+    // CONSTRUCTOR
+    public Productos_VerProducto_Vista(int idProducto) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.producto = producto;
-        //LAMAMOS AL METODO PARA CARGAR LOS DATOS
-        cargarDatos(this.producto);
+        
+        // APLICAMOS EL ID-PRODUCTO
+        this.idProducto = idProducto;
+        
+        // LAMAMOS AL METODO PARA CARGAR LOS DATOS
+        cargarDatos();
     }
 
-    //METODO PARA CARGAR LOS DATOS DEL PRODUCTO
-    public void cargarDatos(Productos_Object producto) {
+    // GETTER
+    public int getIdProducto() {
+        return idProducto;
+    }
 
-        this.producto = producto;
+    // SETTER
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+    }
 
-        //APLICAMOS LA INFORMACION PRINCIPAL DEL PRODUCTO
-        this.txtIdentificador.setText("IDENTIFICADOR : " + this.producto.getIdentificador());
-        this.txtNombre.setText("NOMBRE : " + this.producto.getNombre());
-        this.txtPrecio.setText("PRECIO : " + this.producto.getPrecio() + " €");
-        this.txtCategoria.setText("CATEGORIA : " + this.producto.getCategoria());
-        this.txtStock.setText("STOCK : " + this.producto.getStock());
-        this.txtEmpresa.setText("EMPRESA : " + this.producto.getEmpresas_id_empresa_p().getNombre());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        this.txtF_Alta.setText("FECHA ALTA : " + dateFormat.format(this.producto.getF_alta()));
+    // METODO PARA CARGAR LOS DATOS DEL PRODUCTO
+    public void cargarDatos() {
+
+        this.controladorProductos.obtenerProducto_C(idProducto).thenAccept(producto -> {
+        
+            if(producto != null){
+                
+                // APLICAMOS LA INFORMACION PRINCIPAL DEL PRODUCTO
+                this.txtIdentificador.setText("IDENTIFICADOR : " + producto.getIdentificador());
+                this.txtNombre.setText("NOMBRE : " + producto.getNombre());
+                this.txtPrecio.setText("PRECIO : " + producto.getPrecio() + " €");
+                this.txtCategoria.setText("CATEGORIA : " + producto.getCategoria());
+                this.txtStock.setText("STOCK : " + producto.getStock());
+                this.txtEmpresa.setText("EMPRESA : " + producto.getEmpresas_id_empresa_p().getNombre());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                this.txtF_Alta.setText("FECHA ALTA : " + dateFormat.format(producto.getF_alta()));
+                
+            }
+        
+        }).exceptionally(ex ->{       
+            return null;
+        });
 
     }
 
-    //COMPONENTES DE LA INTERFAZ
+    // COMPONENTES DE LA INTERFAZ
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
