@@ -572,6 +572,16 @@ public class Empresas_Vista extends javax.swing.JPanel {
         }
     }
 
+    // METODO PARA ACTUALIZAR DATOS VENTANA-PRINCIPAL Y VENTANA VER-EMPRESA
+    public void actualizarDatos(int idEmpresa){
+        
+        cargarDatosTabla("");
+        
+        if(this.verEmpresaVista != null && this.verEmpresaVista.getIdEmpresa() == idEmpresa){
+            this.verEmpresaVista.setIdEmpresa(idEmpresa);
+            this.verEmpresaVista.cargarDatos();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarEmpresa;

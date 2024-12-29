@@ -543,6 +543,17 @@ public class Seguros_Vista extends javax.swing.JPanel {
             this.actualizarSeguroVista.dispose();
         }
     }
+    
+    // METODO PARA ACTUALIZAR DATOS VENTANA-PRINCIPAL Y VENTANA VER-SEGURO
+    public void actualizarDatos(int idSeguro){
+        
+        cargarDatosTabla("");
+        
+        if(this.verSeguroVista != null && this.verSeguroVista.getIdSeguro() == idSeguro){
+            this.verSeguroVista.setIdSeguro(idSeguro);
+            this.verSeguroVista.cargarDatos();
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

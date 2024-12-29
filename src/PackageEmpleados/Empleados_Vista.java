@@ -576,6 +576,16 @@ public class Empleados_Vista extends javax.swing.JPanel {
         }
     }
 
+    // METODO PARA ACTUALIZAR DATOS VENTANA-PRINCIPAL Y VENTANA VER-EMPLEADO
+    public void actualizarDatos(int idEmpleado){
+        
+        cargarDatosTabla("");
+        
+        if(this.verEmpleadoVista != null && this.verEmpleadoVista.getIdEmpleado() == idEmpleado){
+            this.verEmpleadoVista.setIdEmpleado(idEmpleado);
+            this.verEmpleadoVista.cargarDatos();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarEmpleado;

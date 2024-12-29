@@ -18,7 +18,7 @@ public class Administracion_Actualizar_Vista extends javax.swing.JFrame {
     // VARIABLE VISTA-ADMINISTRADOR PRINCIPAL
     private final Administracion_Vista vistaA;
 
-    //VARIABLE-ADMINISTRADOR
+    // VARIABLE-ADMINISTRADOR
     private Login_Object administrador;
 
     // CONSTRUCTOR

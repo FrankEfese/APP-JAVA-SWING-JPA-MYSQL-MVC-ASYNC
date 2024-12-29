@@ -56,7 +56,6 @@ public class Empleados_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA ACTUALIZAR UN EMPLEADO (MODELO)
     public void edit(Empleados_Object empleados_Object) throws NonexistentEntityException, Exception {
@@ -98,7 +97,6 @@ public class Empleados_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA ELIMINAR UN EMPLEADO (MODELO)
     public void destroy(int id) throws NonexistentEntityException {
@@ -129,7 +127,6 @@ public class Empleados_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA OBTENER LOS EMPLEADOS (MODELO)
     public List<Empleados_Object> findEmpleados_ObjectEntities() {
@@ -162,7 +159,6 @@ public class Empleados_JPAC_Modelo implements Serializable {
             em.close();
         }
     }
-
     
     // METODO PARA OBTENER UN EMPLEADO (MODELO)
     public Empleados_Object findEmpleados_Object(int id) {
@@ -176,7 +172,6 @@ public class Empleados_JPAC_Modelo implements Serializable {
             em.close();
         }
     }
-
     
     // METODO PARA OBTENER EL TOTAL DE EMPLEADOS (MODELO)
     public int getEmpleados_ObjectCount() {

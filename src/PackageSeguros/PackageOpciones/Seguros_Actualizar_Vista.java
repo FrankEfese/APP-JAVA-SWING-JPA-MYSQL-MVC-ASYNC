@@ -187,7 +187,6 @@ public class Seguros_Actualizar_Vista extends javax.swing.JFrame {
         this.btnActualizar.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnActualizarMouseExited
 
-
     // METODO PARA ACTUALIZAR EL SEGURO
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         try {
@@ -204,7 +203,7 @@ public class Seguros_Actualizar_Vista extends javax.swing.JFrame {
                         this.seguro.setNombre(nombre);
                         this.seguro.setPrecio(precio);
                         this.controladorSeguro.actualizarSeguro_C(seguro).thenRun(() -> {
-                            this.vistaS.cargarDatosTabla("");
+                            this.vistaS.actualizarDatos(this.seguro.getId_seguro());
                         }).exceptionally(ex ->{
                             return null;
                         });

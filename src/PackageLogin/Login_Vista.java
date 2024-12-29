@@ -150,8 +150,6 @@ public class Login_Vista extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    //----- METODOS -----
     
     // METODO-ESTETICO
     private void btnInicioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioMouseEntered
@@ -200,7 +198,6 @@ public class Login_Vista extends javax.swing.JFrame {
         this.btnInicio.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnInicioMouseExited
 
-    //----- METODOS -----
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInicio;

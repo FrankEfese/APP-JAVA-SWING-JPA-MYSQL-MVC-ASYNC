@@ -27,7 +27,6 @@ public class Login_JPAC_Modelo implements Serializable {
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
     
     // METODO PARA CREAR UN ADMINISTRADOR (MODELO) 
     public void create(Login_Object login_Object) {
@@ -46,7 +45,6 @@ public class Login_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA EDITAR UN ADMINISTRADOR (MODELO)
     public void edit(Login_Object login_Object) throws NonexistentEntityException, Exception {
@@ -73,7 +71,6 @@ public class Login_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA ELIMINAR UN ADMINISTRADOR (MODELO)
     public void destroy(int id) throws NonexistentEntityException {
@@ -98,8 +95,7 @@ public class Login_JPAC_Modelo implements Serializable {
                 em.close();
             }
         }
-    }
-    
+    }   
 
     // METODO PARA OBTENER TODOS LOS ADMINISTRADORES (MODELO)
     public List<Login_Object> findLogin_ObjectEntities() {
@@ -132,7 +128,6 @@ public class Login_JPAC_Modelo implements Serializable {
             em.close();
         }
     }
-
     
     // METODO PARA OBTENER UN ADMINISTRADOR (MODELO)
     public Login_Object findLogin_Object(int id) {
@@ -146,7 +141,6 @@ public class Login_JPAC_Modelo implements Serializable {
             em.close();
         }
     }
-
     
     // METODO PARA OBTENER EL NUMERO TOTAL DE ADMINISTRADORES (MODELO)
     public int getLogin_ObjectCount() {

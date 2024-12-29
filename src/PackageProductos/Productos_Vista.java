@@ -629,6 +629,16 @@ public class Productos_Vista extends javax.swing.JPanel {
 
     }
 
+    // METODO PARA ACTUALIZAR DATOS VENTANA-PRINCIPAL Y VENTANA VER-PRODUCTO
+    public void actualizarDatos(int idProducto){
+        
+        cargarDatosTabla("","");
+        
+        if(this.verProductoVista != null && this.verProductoVista.getIdProducto() == idProducto){
+            this.verProductoVista.setIdProducto(idProducto);
+            this.verProductoVista.cargarDatos();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarProducto;

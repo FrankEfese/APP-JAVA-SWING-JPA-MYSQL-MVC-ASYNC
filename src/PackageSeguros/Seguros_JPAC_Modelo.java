@@ -28,8 +28,7 @@ public class Seguros_JPAC_Modelo implements Serializable {
     // GETTER
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
-    }
-    
+    }  
     
     // METODO PARA CREAR UN SEGURO (MODELO)
     public void create(Seguros_Object seguros_Object) {
@@ -121,7 +120,6 @@ public class Seguros_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA ELIMINAR UN SEGURO (MODELO)
     public void destroy(int id) throws NonexistentEntityException {
@@ -153,7 +151,6 @@ public class Seguros_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA OBTENER LOS SEGUROS (MODELO)
     public List<Seguros_Object> findSeguros_ObjectEntities() {
@@ -186,7 +183,6 @@ public class Seguros_JPAC_Modelo implements Serializable {
             em.close();
         }
     }
-
     
     // METODO PARA OBTENER UN SEGURO (MODELO)
     public Seguros_Object findSeguros_Object(int id) {
@@ -200,7 +196,6 @@ public class Seguros_JPAC_Modelo implements Serializable {
             em.close();
         }
     }
-
     
     // METODO PARA OBTENER EL TOTAL DE SEGUROS (MODELO)
     public int getSeguros_ObjectCount() {

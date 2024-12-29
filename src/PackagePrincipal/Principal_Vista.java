@@ -355,8 +355,6 @@ public class Principal_Vista extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    //--- METODOS ---
     
     // METODO-ESTETICO
     private void btnInicioPMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInicioPMouseEntered

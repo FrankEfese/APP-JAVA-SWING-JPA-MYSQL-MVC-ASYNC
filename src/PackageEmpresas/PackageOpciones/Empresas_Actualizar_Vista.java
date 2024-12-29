@@ -319,7 +319,7 @@ public class Empresas_Actualizar_Vista extends javax.swing.JFrame {
                                         this.empresa.setCiudad(ciudad);
                                         this.empresa.setSeguros_id_seguro(seguro);
                                         this.controladorEmpresa.actualizarEmpresa_C(this.empresa).thenRun(() -> {
-                                            this.vistaE.cargarDatosTabla("");
+                                            this.vistaE.actualizarDatos(this.empresa.getId_empresa());
                                         }).exceptionally(ex ->{
                                             return null;
                                         });
@@ -342,7 +342,7 @@ public class Empresas_Actualizar_Vista extends javax.swing.JFrame {
                             this.empresa.setNombre(nombre);
                             this.empresa.setCiudad(ciudad);
                             this.controladorEmpresa.actualizarEmpresa_C(this.empresa).thenRun(() -> {
-                                this.vistaE.cargarDatosTabla("");
+                                this.vistaE.actualizarDatos(this.empresa.getId_empresa());
                             }).exceptionally(ex ->{
                                 return null;
                             });

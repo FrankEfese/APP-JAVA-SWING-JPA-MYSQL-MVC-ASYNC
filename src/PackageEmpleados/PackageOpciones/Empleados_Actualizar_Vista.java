@@ -341,7 +341,7 @@ public class Empleados_Actualizar_Vista extends javax.swing.JFrame {
                                         this.empleado.setTelefono(Integer.parseInt(telefono));
                                         this.empleado.setEmpresas_id_empresa(empresa);
                                         this.controladorEmpleado.actualizarEmpleado_C(this.empleado).thenRun(() -> {
-                                            this.vistaE.cargarDatosTabla("");
+                                            this.vistaE.actualizarDatos(this.empleado.getId_empleado());
                                         }).exceptionally(ex ->{
                                             return null;
                                         });
@@ -365,7 +365,7 @@ public class Empleados_Actualizar_Vista extends javax.swing.JFrame {
                             this.empleado.setEdad(edad);
                             this.empleado.setTelefono(Integer.parseInt(telefono));
                             this.controladorEmpleado.actualizarEmpleado_C(this.empleado).thenRun(() -> {
-                                this.vistaE.cargarDatosTabla("");
+                                this.vistaE.actualizarDatos(this.empleado.getId_empleado());
                             });
                             this.txtDni.setText("");
                             this.txtNombre.setText("");

@@ -57,7 +57,6 @@ public class Productos_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA ACTUALIZAR UN PRODUCTO (MODELO)
     public void edit(Productos_Object productos_Object) throws NonexistentEntityException, Exception {
@@ -100,7 +99,6 @@ public class Productos_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA ELIMINAR UN PRODUCTO (MODELO)
     public void destroy(int id) throws NonexistentEntityException {
@@ -131,7 +129,6 @@ public class Productos_JPAC_Modelo implements Serializable {
             }
         }
     }
-
     
     // METODO PARA OBTENER LOS PRODUCTOS (MODELO)
     public List<Productos_Object> findProductos_ObjectEntities() {
@@ -143,13 +140,11 @@ public class Productos_JPAC_Modelo implements Serializable {
         }
         
     }
-
     
     // METODO PARA OBTENER LOS PRODUCTOS (MODELO)
     public List<Productos_Object> findProductos_ObjectEntities(int maxResults, int firstResult) {
         return findProductos_ObjectEntities(false, maxResults, firstResult);
     }
-
     
     // METODO PARA OBTENER LOS PRODUCTOS (MODELO)
     private List<Productos_Object> findProductos_ObjectEntities(boolean all, int maxResults, int firstResult) {
@@ -167,7 +162,6 @@ public class Productos_JPAC_Modelo implements Serializable {
             em.close();
         }
     }
-
     
     // METODO PARA OBTENER UN PRODUCTO (MODELO)
     public Productos_Object findProductos_Object(int id) {
@@ -181,7 +175,6 @@ public class Productos_JPAC_Modelo implements Serializable {
             em.close();
         }
     }
-
     
     // METODO PARA OBTENER EL TOTAL DE PRODUCTOS (MODELO)
     public int getProductos_ObjectCount() {
