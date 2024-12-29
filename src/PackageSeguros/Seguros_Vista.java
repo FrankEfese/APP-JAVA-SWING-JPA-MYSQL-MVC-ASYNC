@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class Seguros_Vista extends javax.swing.JPanel {
@@ -21,12 +22,11 @@ public class Seguros_Vista extends javax.swing.JPanel {
     private Seguros_VerSeguro_Vista verSeguroVista;
     private Seguros_Agregar_Vista agregarSeguroVista;
     private Seguros_Actualizar_Vista actualizarSeguroVista;
-    
-    
+
     // CONSTRUCTOR
     public Seguros_Vista() {
         initComponents();
-        
+
         // LLAMAMOS AL METODO PARA CARGAR LOS DATOS EN LA TABLA
         cargarDatosTabla("");
     }
@@ -321,63 +321,63 @@ public class Seguros_Vista extends javax.swing.JPanel {
     // METODO PARA CARGAR LOS DATOS DE LOS SEGUROS EN LA TABLA
     public void cargarDatosTabla(String texto) {
 
+        // DESHABILITAMOS LA TABLA TEMPORALMENTE
+        this.tablaSeguros.setEnabled(false);
+
         // SE APLICA LAS COLUMNAS
         String columnas[] = {"ID", "NOMBRE", "PRECIO", "FECHA ALTA"};
         this.modelo = new DefaultTableModel(columnas, 0);
-        
+
         // LIMPIAMOS LA TABLA
         this.modelo.setRowCount(0);
 
         // FORMATO FECHA
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        // TOTAL SEGUROS 
-        int totalSeguros = this.controladorSeguro.totalSeguros_C().join();
-        
-        // APLICAMOS EL TOTAL DE SEGUROS
-        this.txtTotalSeguros.setText("* Total de Seguros : " + totalSeguros);
+        // OBTENEMOS LOS SEGUROS
+        this.controladorSeguro.obtenerTodosSeguros_C().thenAccept(listaSeguros -> {
 
-        if (totalSeguros != 0) {
+            if (texto.isEmpty()) {
 
-            // OBTENEMOS LOS SEGUROS
-            this.controladorSeguro.obtenerTodosSeguros_C().thenAccept(listaSeguros -> {
-            
-                if (texto.isEmpty()) {
+                // CARGAMOS TODOS LOS DATOS           
+                Object arrayObjetos[] = new Object[4];
+                for (Seguros_Object aux : listaSeguros) {
+                    arrayObjetos[0] = aux.getId_seguro();
+                    arrayObjetos[1] = aux.getNombre();
+                    arrayObjetos[2] = String.valueOf(aux.getPrecio() + " €");
+                    arrayObjetos[3] = dateFormat.format(aux.getF_alta());
+                    this.modelo.addRow(arrayObjetos);
+                }
 
-                    // CARGAMOS TODOS LOS DATOS           
-                    Object arrayObjetos[] = new Object[4];
-                    for (Seguros_Object aux : listaSeguros) {
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaSeguros.setModel(modelo);
+                    this.tablaSeguros.setEnabled(true);
+                    this.txtTotalSeguros.setText("* Total de Seguros : " + this.tablaSeguros.getRowCount());
+                });
+
+            } else {
+
+                // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO           
+                Object arrayObjetos[] = new Object[4];
+                for (Seguros_Object aux : listaSeguros) {
+                    if (aux.getNombre().contains(texto.toUpperCase())) {
                         arrayObjetos[0] = aux.getId_seguro();
                         arrayObjetos[1] = aux.getNombre();
-                        arrayObjetos[2] = String.valueOf(aux.getPrecio() + " €");
+                        arrayObjetos[2] = aux.getPrecio();
                         arrayObjetos[3] = dateFormat.format(aux.getF_alta());
                         this.modelo.addRow(arrayObjetos);
                     }
-
-                    this.tablaSeguros.setModel(this.modelo);
-
-                } else {
-
-                    // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO           
-                    Object arrayObjetos[] = new Object[4];
-                    for (Seguros_Object aux : listaSeguros) {
-                        if (aux.getNombre().contains(texto.toUpperCase())) {
-                            arrayObjetos[0] = aux.getId_seguro();
-                            arrayObjetos[1] = aux.getNombre();
-                            arrayObjetos[2] = aux.getPrecio();
-                            arrayObjetos[3] = dateFormat.format(aux.getF_alta());
-                            this.modelo.addRow(arrayObjetos);
-                        }
-                    }
-
-                    this.tablaSeguros.setModel(this.modelo);
                 }
-            
-            });           
 
-        }else{
-            this.tablaSeguros.setModel(this.modelo);
-        }
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaSeguros.setModel(modelo);
+                    this.tablaSeguros.setEnabled(true);
+                    this.txtTotalSeguros.setText("* Total de Seguros : " + this.tablaSeguros.getRowCount());
+                });
+            }
+
+        });
+
     }
 
     // METODO-ESTETICO
@@ -461,9 +461,9 @@ public class Seguros_Vista extends javax.swing.JPanel {
     private void btnActualizarSeguroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarSeguroActionPerformed
         if (this.tablaSeguros.getSelectedRow() != -1) {
             int idSeguro = (int) this.tablaSeguros.getValueAt(this.tablaSeguros.getSelectedRow(), 0);
-            
+
             this.controladorSeguro.obtenerSeguro_C(idSeguro).thenAccept(seguro -> {
-            
+
                 if (seguro != null) {
                     if (this.actualizarSeguroVista == null) {
                         this.actualizarSeguroVista = new Seguros_Actualizar_Vista(this, seguro);
@@ -473,9 +473,9 @@ public class Seguros_Vista extends javax.swing.JPanel {
                         this.actualizarSeguroVista.cargarDatos();
                         this.actualizarSeguroVista.setVisible(true);
                     }
-                }              
+                }
             });
-            
+
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA FILA DE LA TABLA", "SEGUROS", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -487,14 +487,17 @@ public class Seguros_Vista extends javax.swing.JPanel {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿DESEAS ELIMINAR EL SEGURO SELECCIONADO?", "SEGUROS", JOptionPane.YES_NO_OPTION);
             if (respuesta == JOptionPane.YES_OPTION) {
                 int idSeguro = (int) this.tablaSeguros.getValueAt(this.tablaSeguros.getSelectedRow(), 0);
-                this.controladorSeguro.eliminarSeguro_C(idSeguro);
-                cargarDatosTabla("");
-                
-                if(this.verSeguroVista != null && this.verSeguroVista.getIdSeguro() == idSeguro){
+                this.controladorSeguro.eliminarSeguro_C(idSeguro).thenRun(() -> {
+                    cargarDatosTabla("");
+                }).exceptionally(ex -> {
+                    return null;
+                });
+
+                if (this.verSeguroVista != null && this.verSeguroVista.getIdSeguro() == idSeguro) {
                     this.verSeguroVista.dispose();
                 }
-                
-                if(this.actualizarSeguroVista != null && this.actualizarSeguroVista.getSeguro().getId_seguro() == idSeguro){
+
+                if (this.actualizarSeguroVista != null && this.actualizarSeguroVista.getSeguro().getId_seguro() == idSeguro) {
                     this.actualizarSeguroVista.dispose();
                 }
             }
@@ -525,23 +528,22 @@ public class Seguros_Vista extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnVerSeguroActionPerformed
 
-    
     // METODO PARA CERRAR LAS VENTANAS
-    public void eliminarVentanas(){
-        
-        if(this.verSeguroVista != null){
+    public void eliminarVentanas() {
+
+        if (this.verSeguroVista != null) {
             this.verSeguroVista.dispose();
         }
-        
-        if(this.agregarSeguroVista != null){
+
+        if (this.agregarSeguroVista != null) {
             this.agregarSeguroVista.dispose();
         }
-        
-        if(this.actualizarSeguroVista != null){
+
+        if (this.actualizarSeguroVista != null) {
             this.actualizarSeguroVista.dispose();
         }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarSeguro;

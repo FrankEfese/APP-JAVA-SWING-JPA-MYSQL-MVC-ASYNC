@@ -185,12 +185,15 @@ public class Administracion_Agregar_Vista extends javax.swing.JFrame {
                     if(!existe){
                         
                         Login_Object admin = new Login_Object(correo, contra);
-                        this.controladorAdmin.guardarAdmin_C(admin);
+                        this.controladorAdmin.guardarAdmin_C(admin).thenRun(() -> {
+                            this.vistaA.cargarDatosTabla("");
+                        }).exceptionally(ex -> {
+                            return null;
+                        });
                         this.txtCorreo.setText("");
                         this.txtContraseña.setText("");
                         this.dispose();
-                        this.vistaA.cargarDatosTabla("");
-                        
+                                                
                     }else{
                         JOptionPane.showMessageDialog(null, "CORREO YA EXISTENTE", "AGREGAR ADMINISTRADOR", JOptionPane.INFORMATION_MESSAGE);
                     }

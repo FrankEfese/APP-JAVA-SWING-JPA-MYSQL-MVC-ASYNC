@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class Empleados_Vista extends javax.swing.JPanel {
@@ -23,11 +24,11 @@ public class Empleados_Vista extends javax.swing.JPanel {
     private Empleados_Agregar_Vista agregarEmpleadoVista;
     private Empleados_VerEmpleado_Vista verEmpleadoVista;
     private Empleados_Actualizar_Vista actualizarEmpleadoVista;
-    
+
     // CONSTRUCTOR
     public Empleados_Vista() {
         initComponents();
-        
+
         // LLAMAMOS AL METODO PARA CARGAR LOS DATOS EN LA TABLA
         cargarDatosTabla("");
     }
@@ -325,6 +326,9 @@ public class Empleados_Vista extends javax.swing.JPanel {
     // METODO PARA CARGAR LOS DATOS DE LOS EMPLEADOS EN LA TABLA
     public void cargarDatosTabla(String texto) {
 
+        // DESHABILITAMOS LA TABLA TEMPORALMENTE
+        this.tablaEmpleados.setEnabled(false);
+
         // SE APLICA LAS COLUMNAS
         String columnas[] = {"ID", "DNI", "NOMBRE", "EDAD", "TELEFONO", "EMPRESA", "FECHA ALTA"};
         this.modelo = new DefaultTableModel(columnas, 0);
@@ -335,22 +339,40 @@ public class Empleados_Vista extends javax.swing.JPanel {
         // FORMATO FECHA
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        // TOTAL DE EMPLEADOS
-        int totalEmpleados = this.controladorEmpleados.totalEmpleados().join();
+        // OBTENEMOS LOS EMPLEADOS
+        this.controladorEmpleados.obtenerTodosEmpleados_C().thenAccept(listaEmpleados -> {
 
-        // APLICAMOS EL TOTAL DE EMPLEADOS
-        this.txtTotalEmpleados.setText("* Total de Empleados : " + totalEmpleados);
+            if (texto.isEmpty()) {
 
-        if (totalEmpleados != 0) {
+                // CARGAMOS TODOS LOS DATOS           
+                Object arrayObjetos[] = new Object[7];
+                for (Empleados_Object aux : listaEmpleados) {
+                    arrayObjetos[0] = aux.getId_empleado();
+                    arrayObjetos[1] = aux.getDni();
+                    arrayObjetos[2] = aux.getNombre();
+                    arrayObjetos[3] = aux.getEdad();
+                    arrayObjetos[4] = aux.getTelefono();
+                    if (aux.getEmpresas_id_empresa() == null) {
+                        arrayObjetos[5] = "SIN TRABAJO";
+                    } else {
+                        arrayObjetos[5] = aux.getEmpresas_id_empresa().getNombre();
+                    }
+                    arrayObjetos[6] = dateFormat.format(aux.getF_alta());
+                    this.modelo.addRow(arrayObjetos);
+                }
 
-            // OBTENEMOS LOS EMPLEADOS
-            this.controladorEmpleados.obtenerTodosEmpleados_C().thenAccept(listaEmpleados -> {
-            
-                if (texto.isEmpty()) {
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaEmpleados.setModel(modelo);
+                    this.tablaEmpleados.setEnabled(true);
+                    this.txtTotalEmpleados.setText("* Total de Empleados : " + this.tablaEmpleados.getRowCount());
+                });
 
-                    // CARGAMOS TODOS LOS DATOS           
-                    Object arrayObjetos[] = new Object[7];
-                    for (Empleados_Object aux : listaEmpleados) {
+            } else {
+
+                // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO           
+                Object arrayObjetos[] = new Object[7];
+                for (Empleados_Object aux : listaEmpleados) {
+                    if (aux.getNombre().contains(texto.toUpperCase())) {
                         arrayObjetos[0] = aux.getId_empleado();
                         arrayObjetos[1] = aux.getDni();
                         arrayObjetos[2] = aux.getNombre();
@@ -365,37 +387,15 @@ public class Empleados_Vista extends javax.swing.JPanel {
                         this.modelo.addRow(arrayObjetos);
                     }
 
-                    this.tablaEmpleados.setModel(this.modelo);
-
-                } else {
-
-                    // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO           
-                    Object arrayObjetos[] = new Object[7];
-                    for (Empleados_Object aux : listaEmpleados) {
-                        if (aux.getNombre().contains(texto.toUpperCase())) {
-                            arrayObjetos[0] = aux.getId_empleado();
-                            arrayObjetos[1] = aux.getDni();
-                            arrayObjetos[2] = aux.getNombre();
-                            arrayObjetos[3] = aux.getEdad();
-                            arrayObjetos[4] = aux.getTelefono();
-                            if (aux.getEmpresas_id_empresa() == null) {
-                                arrayObjetos[5] = "SIN TRABAJO";
-                            } else {
-                                arrayObjetos[5] = aux.getEmpresas_id_empresa().getNombre();
-                            }
-                            arrayObjetos[6] = dateFormat.format(aux.getF_alta());
-                            this.modelo.addRow(arrayObjetos);
-                        }
-
-                        this.tablaEmpleados.setModel(this.modelo);
-                    }
                 }
-            
-            });
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaEmpleados.setModel(modelo);
+                    this.tablaEmpleados.setEnabled(true);
+                    this.txtTotalEmpleados.setText("* Total de Empleados : " + this.tablaEmpleados.getRowCount());
+                });
+            }
 
-        }else{
-            this.tablaEmpleados.setModel(this.modelo);
-        }
+        });
 
     }
 
@@ -472,14 +472,17 @@ public class Empleados_Vista extends javax.swing.JPanel {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿DESEAS ELIMINAR EL EMPLEADO SELECCIONADO?", "EMPLEADOS", JOptionPane.YES_NO_OPTION);
             if (respuesta == JOptionPane.YES_OPTION) {
                 int idEmpleado = (int) this.tablaEmpleados.getValueAt(this.tablaEmpleados.getSelectedRow(), 0);
-                this.controladorEmpleados.eliminarEmpleado_C(idEmpleado);
-                cargarDatosTabla("");
-                
-                if(this.verEmpleadoVista != null && this.verEmpleadoVista.getIdEmpleado() == idEmpleado){
+                this.controladorEmpleados.eliminarEmpleado_C(idEmpleado).thenRun(() -> {
+                    cargarDatosTabla("");
+                }).exceptionally(ex -> {
+                    return null;
+                });
+
+                if (this.verEmpleadoVista != null && this.verEmpleadoVista.getIdEmpleado() == idEmpleado) {
                     this.verEmpleadoVista.dispose();
                 }
-                
-                if(this.actualizarEmpleadoVista != null && this.actualizarEmpleadoVista.getEmpleado().getId_empleado() == idEmpleado){
+
+                if (this.actualizarEmpleadoVista != null && this.actualizarEmpleadoVista.getEmpleado().getId_empleado() == idEmpleado) {
                     this.actualizarEmpleadoVista.dispose();
                 }
             }
@@ -491,25 +494,25 @@ public class Empleados_Vista extends javax.swing.JPanel {
 
     // METODO PARA ABRIR LA PESTAÑA QUE PERMITE AGREGAR LOS EMPLEADOS
     private void btnAgregarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEmpleadoActionPerformed
-        this.controladorEmpresas.totalEmpresas().thenAccept(total -> {        
-            if(total > 0){
-                
+        this.controladorEmpresas.totalEmpresas().thenAccept(total -> {
+            if (total > 0) {
+
                 if (this.agregarEmpleadoVista == null) {
                     this.agregarEmpleadoVista = new Empleados_Agregar_Vista(this);
                     this.agregarEmpleadoVista.setVisible(true);
                 } else {
                     this.agregarEmpleadoVista.setVisible(true);
                 }
-                
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(null, "AUN NO HAY EMPRESAS DISPONIBLES QUE APLICAR AL EMPLEADO", "EMPLEADOS", JOptionPane.INFORMATION_MESSAGE);
-            }            
+            }
         });
     }//GEN-LAST:event_btnAgregarEmpleadoActionPerformed
 
     // METODO PARA ABRIR LA PESTAÑA QUE PERMITE VER LOS DATOS DE LOS EMPLEADOS
     private void btnVerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEmpleadoActionPerformed
-        if(this.tablaEmpleados.getSelectedRow() != -1){           
+        if (this.tablaEmpleados.getSelectedRow() != -1) {
             int idEmpleado = (int) this.tablaEmpleados.getValueAt(this.tablaEmpleados.getSelectedRow(), 0);
             if (idEmpleado > 0) {
 
@@ -522,8 +525,8 @@ public class Empleados_Vista extends javax.swing.JPanel {
                     this.verEmpleadoVista.setVisible(true);
                 }
             }
-            
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA FILA DE LA TABLA", "EMPLEADOS", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnVerEmpleadoActionPerformed
@@ -532,51 +535,47 @@ public class Empleados_Vista extends javax.swing.JPanel {
     private void btnActualizarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarEmpleadoActionPerformed
         if (this.tablaEmpleados.getSelectedRow() != -1) {
             int idEmpleado = (int) this.tablaEmpleados.getValueAt(this.tablaEmpleados.getSelectedRow(), 0);
-            
+
             this.controladorEmpleados.obtenerEmpleado_C(idEmpleado).thenAccept(empleado -> {
-            
+
                 if (empleado != null) {
                     this.controladorEmpresas.obtenerFilaTabla(empleado.getEmpresas_id_empresa()).thenAccept(indice -> {
-                    
-                        if(indice != -1){
-                            
-                            if (this.actualizarEmpleadoVista == null) {
-                                this.actualizarEmpleadoVista = new Empleados_Actualizar_Vista(this, empleado, indice);
-                                this.actualizarEmpleadoVista.setVisible(true);
-                            } else {
-                                this.actualizarEmpleadoVista.setEmpleado(empleado);
-                                this.actualizarEmpleadoVista.setIndice(indice);
-                                this.actualizarEmpleadoVista.cargarDatos();
-                                this.actualizarEmpleadoVista.setVisible(true);
-                            }
-                            
+
+                        if (this.actualizarEmpleadoVista == null) {
+                            this.actualizarEmpleadoVista = new Empleados_Actualizar_Vista(this, empleado, indice);
+                            this.actualizarEmpleadoVista.setVisible(true);
+                        } else {
+                            this.actualizarEmpleadoVista.setEmpleado(empleado);
+                            this.actualizarEmpleadoVista.setIndice(indice);
+                            this.actualizarEmpleadoVista.cargarDatos();
+                            this.actualizarEmpleadoVista.setVisible(true);
                         }
-                                                
-                    });                   
-                }           
+
+                    });
+                }
             });
 
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA FILA DE LA TABLA", "EMPLEADOS", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnActualizarEmpleadoActionPerformed
-    
+
     // METODO PARA CERRAR LAS VENTANAS
-    public void eliminarVentanas(){
-        
-        if(this.verEmpleadoVista != null){
+    public void eliminarVentanas() {
+
+        if (this.verEmpleadoVista != null) {
             this.verEmpleadoVista.dispose();
         }
-        
-        if(this.agregarEmpleadoVista != null){
+
+        if (this.agregarEmpleadoVista != null) {
             this.agregarEmpleadoVista.dispose();
         }
-        
-        if(this.actualizarEmpleadoVista != null){
+
+        if (this.actualizarEmpleadoVista != null) {
             this.actualizarEmpleadoVista.dispose();
         }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarEmpleado;

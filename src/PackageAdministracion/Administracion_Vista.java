@@ -7,6 +7,7 @@ import PackagePrincipal.Principal_Vista;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class Administracion_Vista extends javax.swing.JPanel {
@@ -20,11 +21,11 @@ public class Administracion_Vista extends javax.swing.JPanel {
     // VARIABLES VISTAS-OPCIONES
     private Administracion_Agregar_Vista agregarAdminVista;
     private Administracion_Actualizar_Vista actualizarAdminVista;
-    
+
     // CONSTRUCTOR
     public Administracion_Vista() {
         initComponents();
-        
+
         // LLAMAMOS AL METODO PARA CARGAR LOS DATOS EN LA TABLA
         cargarDatosTabla("");
     }
@@ -294,6 +295,9 @@ public class Administracion_Vista extends javax.swing.JPanel {
     // METODO PARA CARGAR LOS DATOS DE LOS ADMINISTRADORES EN LA TABLA
     public void cargarDatosTabla(String texto) {
 
+        // DESHABILITAMOS LA TABLA TEMPORALMENTE
+        this.tablaAdmin.setEnabled(false);
+
         // SE APLICA LAS COLUMNAS
         String columnas[] = {"ID", "CORREO", "CONTRASEÑA"};
         this.modelo = new DefaultTableModel(columnas, 0);
@@ -301,51 +305,50 @@ public class Administracion_Vista extends javax.swing.JPanel {
         // LIMPIAMOS LA TABLA
         this.modelo.setRowCount(0);
 
-        // TOTAL DE ADMINS
-        int totalAdmin = this.controladorAdmin.totalAdmin().join();
+        // OBTENEMOS LOS ADMINISTRADORES
+        this.controladorAdmin.obtenerTodosLogin_C().thenAccept(listaAdmins -> {
 
-        if (totalAdmin != 0) {
+            // APLICAMOS EL TOTAL DE ADMINISTRADORES
+            this.txtTotalAdmin.setText("* Total de Administradores : " + listaAdmins.size());
 
-            // OBTENEMOS LOS ADMINISTRADORES
-            this.controladorAdmin.obtenerTodosLogin_C().thenAccept(listaAdmins -> {
-            
-                // APLICAMOS EL TOTAL DE ADMINISTRADORES
-                this.txtTotalAdmin.setText("* Total de Administradores : " + listaAdmins.size());
+            if (texto.isEmpty()) {
 
-                if (texto.isEmpty()) {
+                // CARGAMOS TODOS LOS DATOS           
+                Object arrayObjetos[] = new Object[3];
+                for (Login_Object aux : listaAdmins) {
+                    arrayObjetos[0] = aux.getId_login();
+                    arrayObjetos[1] = aux.getCorreo();
+                    arrayObjetos[2] = aux.getContraseña();
+                    this.modelo.addRow(arrayObjetos);
+                }
 
-                    // CARGAMOS TODOS LOS DATOS           
-                    Object arrayObjetos[] = new Object[3];
-                    for (Login_Object aux : listaAdmins) {
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaAdmin.setModel(modelo);
+                    this.tablaAdmin.setEnabled(true);
+                    this.txtTotalAdmin.setText("* Total de Administradores : " + this.tablaAdmin.getRowCount());
+                });
+
+            } else {
+
+                // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO           
+                Object arrayObjetos[] = new Object[3];
+                for (Login_Object aux : listaAdmins) {
+                    if (aux.getCorreo().contains(texto)) {
                         arrayObjetos[0] = aux.getId_login();
                         arrayObjetos[1] = aux.getCorreo();
                         arrayObjetos[2] = aux.getContraseña();
                         this.modelo.addRow(arrayObjetos);
                     }
-
-                    this.tablaAdmin.setModel(this.modelo);
-
-                } else {
-
-                    // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO           
-                    Object arrayObjetos[] = new Object[3];
-                    for (Login_Object aux : listaAdmins) {
-                        if (aux.getCorreo().contains(texto)) {
-                            arrayObjetos[0] = aux.getId_login();
-                            arrayObjetos[1] = aux.getCorreo();
-                            arrayObjetos[2] = aux.getContraseña();
-                            this.modelo.addRow(arrayObjetos);
-                        }
-                    }
-
-                    this.tablaAdmin.setModel(this.modelo);
                 }
-            
-            });
 
-        }else{
-            this.tablaAdmin.setModel(this.modelo);
-        }
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaAdmin.setModel(modelo);
+                    this.tablaAdmin.setEnabled(true);
+                    this.txtTotalAdmin.setText("* Total de Administradores : " + this.tablaAdmin.getRowCount());
+                });
+            }
+
+        });
     }
 
     // METODO-ESTETICO
@@ -418,9 +421,9 @@ public class Administracion_Vista extends javax.swing.JPanel {
     private void btnActualizarAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAdminActionPerformed
         if (this.tablaAdmin.getSelectedRow() != -1) {
             int idAdmin = (int) this.tablaAdmin.getValueAt(this.tablaAdmin.getSelectedRow(), 0);
-            
-            this.controladorAdmin.obtenerAdmin_C(idAdmin).thenAccept(admin -> {            
-                if(admin != null){                   
+
+            this.controladorAdmin.obtenerAdmin_C(idAdmin).thenAccept(admin -> {
+                if (admin != null) {
                     if (this.actualizarAdminVista == null) {
                         this.actualizarAdminVista = new Administracion_Actualizar_Vista(this, admin);
                         this.actualizarAdminVista.setVisible(true);
@@ -428,10 +431,10 @@ public class Administracion_Vista extends javax.swing.JPanel {
                         this.actualizarAdminVista.setAdministrador(admin);
                         this.actualizarAdminVista.cargarDatos();
                         this.actualizarAdminVista.setVisible(true);
-                    }                  
-                }           
+                    }
+                }
             });
-            
+
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA FILA DE LA TABLA", "ADMINISTRADORES", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -448,10 +451,13 @@ public class Administracion_Vista extends javax.swing.JPanel {
                 if (correo.equals(Principal_Vista.correoAdministrador)) {
                     JOptionPane.showMessageDialog(null, "NO PUEDES ELIMINARTE A TI MISMO", "ADMINISTRADORES", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    this.controladorAdmin.eliminarAdmin_C(idAdmin);
-                    cargarDatosTabla("");
-                    
-                    if(this.actualizarAdminVista.getAdministrador().getId_login() == idAdmin){
+                    this.controladorAdmin.eliminarAdmin_C(idAdmin).thenRun(() -> {
+                        cargarDatosTabla("");
+                    }).exceptionally(ex -> {
+                        return null;
+                    });
+
+                    if (this.actualizarAdminVista != null && this.actualizarAdminVista.getAdministrador().getId_login() == idAdmin) {
                         this.actualizarAdminVista.dispose();
                     }
                 }
@@ -461,19 +467,19 @@ public class Administracion_Vista extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA FILA DE LA TABLA", "ADMINISTRADORES", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnEliminarAdminActionPerformed
-    
+
     // METODO PARA CERRAR LAS VENTANAS
-    public void eliminarVentanas(){
-        
-        if(this.agregarAdminVista != null){
+    public void eliminarVentanas() {
+
+        if (this.agregarAdminVista != null) {
             this.agregarAdminVista.dispose();
         }
-        
-        if(this.actualizarAdminVista != null){
+
+        if (this.actualizarAdminVista != null) {
             this.actualizarAdminVista.dispose();
         }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarAdmin;

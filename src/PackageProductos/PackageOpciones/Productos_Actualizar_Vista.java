@@ -376,15 +376,18 @@ public class Productos_Actualizar_Vista extends javax.swing.JFrame {
                                         this.producto.setStock(stock);
                                         this.producto.setCategoria(categoria);
                                         this.producto.setEmpresas_id_empresa_p(empresa);
-                                        this.controladorProducto.actualizarProducto_C(this.producto);
+                                        this.controladorProducto.actualizarProducto_C(this.producto).thenRun(() -> {
+                                            this.vistaP.cargarDatosTabla("", "");
+                                        }).exceptionally(ex ->{
+                                            return null;
+                                        });
                                         this.txtIdentificador.setText("");
                                         this.txtNombre.setText("");
                                         this.txtPrecio.setText("");
                                         this.cmbCategorias.setSelectedIndex(0);
                                         this.tablaEmpresas.clearSelection();
                                         this.dispose();
-                                        this.vistaP.cargarDatosTabla("", "");
-                                        
+                                                                                
                                     }
                                 
                                 }).exceptionally(ex ->{
@@ -401,13 +404,16 @@ public class Productos_Actualizar_Vista extends javax.swing.JFrame {
                             this.producto.setPrecio(precio);
                             this.producto.setStock(stock);
                             this.producto.setCategoria(categoria);
-                            this.controladorProducto.actualizarProducto_C(this.producto);
+                            this.controladorProducto.actualizarProducto_C(this.producto).thenRun(() -> {
+                                this.vistaP.cargarDatosTabla("", "");
+                            }).exceptionally(ex ->{
+                                return null;
+                            });
                             this.txtIdentificador.setText("");
                             this.txtNombre.setText("");
                             this.cmbCategorias.setSelectedIndex(0);
                             this.tablaEmpresas.clearSelection();
                             this.dispose();
-                            this.vistaP.cargarDatosTabla("", "");
                         }
                         
                     }else{

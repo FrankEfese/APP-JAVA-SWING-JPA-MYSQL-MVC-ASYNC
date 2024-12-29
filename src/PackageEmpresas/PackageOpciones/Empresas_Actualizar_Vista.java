@@ -318,12 +318,15 @@ public class Empresas_Actualizar_Vista extends javax.swing.JFrame {
                                         this.empresa.setNombre(nombre);
                                         this.empresa.setCiudad(ciudad);
                                         this.empresa.setSeguros_id_seguro(seguro);
-                                        this.controladorEmpresa.actualizarEmpresa_C(this.empresa);
+                                        this.controladorEmpresa.actualizarEmpresa_C(this.empresa).thenRun(() -> {
+                                            this.vistaE.cargarDatosTabla("");
+                                        }).exceptionally(ex ->{
+                                            return null;
+                                        });
                                         this.txtIdEmp.setText("");
                                         this.txtNombre.setText("");
                                         this.txtCiudad.setText("");
-                                        this.dispose();
-                                        this.vistaE.cargarDatosTabla("");
+                                        this.dispose();                                       
                                     }
                                                                       
                                 }).exceptionally(ex ->{
@@ -338,12 +341,15 @@ public class Empresas_Actualizar_Vista extends javax.swing.JFrame {
                             this.empresa.setId_empresarial(idEmp);
                             this.empresa.setNombre(nombre);
                             this.empresa.setCiudad(ciudad);
-                            this.controladorEmpresa.actualizarEmpresa_C(this.empresa);
+                            this.controladorEmpresa.actualizarEmpresa_C(this.empresa).thenRun(() -> {
+                                this.vistaE.cargarDatosTabla("");
+                            }).exceptionally(ex ->{
+                                return null;
+                            });
                             this.txtIdEmp.setText("");
                             this.txtNombre.setText("");
                             this.txtCiudad.setText("");
-                            this.dispose();
-                            this.vistaE.cargarDatosTabla("");
+                            this.dispose();                           
                         }
                         
                     }else{

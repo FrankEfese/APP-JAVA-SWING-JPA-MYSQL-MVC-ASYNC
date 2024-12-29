@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class Empresas_Vista extends javax.swing.JPanel {
@@ -23,11 +24,11 @@ public class Empresas_Vista extends javax.swing.JPanel {
     private Empresas_VerEmpresa_Vista verEmpresaVista;
     private Empresas_Agregar_Vista agregarEmpresaVista;
     private Empresas_Actualizar_Vista actualizarEmpresasVista;
-       
+
     // CONSTRUCTOR
     public Empresas_Vista() {
         initComponents();
-        
+
         // LLAMAMOS AL METODO PARA CARGAR LOS DATOS EN LA TABLA
         cargarDatosTabla("");
     }
@@ -325,6 +326,9 @@ public class Empresas_Vista extends javax.swing.JPanel {
     // METODO PARA CARGAR LOS DATOS DE LAS EMPRESAS EN LA TABLA
     public void cargarDatosTabla(String texto) {
 
+        // DESHABILITAMOS LA TABLA TEMPORALMENTE
+        this.tablaEmpresas.setEnabled(false);
+
         // SE APLICA LAS COLUMNAS
         String columnas[] = {"ID", "ID-EMPRESARIAL", "NOMBRE", "CIUDAD", "SEGURO", "FECHA ALTA"};
         this.modelo = new DefaultTableModel(columnas, 0);
@@ -335,22 +339,39 @@ public class Empresas_Vista extends javax.swing.JPanel {
         // FORMATO FECHA
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        // TOTAL DE EMPRESAS
-        int totalEmpresas = this.controladorEmpresas.totalEmpresas().join();
+        // OBTENEMOS LAS EMPRESAS
+        this.controladorEmpresas.obtenerTodasEmpresas_C().thenAccept(listaEmpresas -> {
 
-        // APLICAMOS EL TOTAL DE EMPRESAS
-        this.txtTotalEmpresas.setText("* Total de Empresas : " + totalEmpresas);
+            if (texto.isEmpty()) {
 
-        if (totalEmpresas != 0) {
+                // CARGAMOS TODOS LOS DATOS           
+                Object arrayObjetos[] = new Object[6];
+                for (Empresas_Object aux : listaEmpresas) {
+                    arrayObjetos[0] = aux.getId_empresa();
+                    arrayObjetos[1] = aux.getId_empresarial();
+                    arrayObjetos[2] = aux.getNombre();
+                    arrayObjetos[3] = aux.getCiudad();
+                    if (aux.getSeguros_id_seguro() == null) {
+                        arrayObjetos[4] = "SIN SEGURO";
+                    } else {
+                        arrayObjetos[4] = aux.getSeguros_id_seguro().getNombre();
+                    }
+                    arrayObjetos[5] = dateFormat.format(aux.getF_alta());
+                    this.modelo.addRow(arrayObjetos);
+                }
 
-            // OBTENEMOS LAS EMPRESAS
-            this.controladorEmpresas.obtenerTodasEmpresas_C().thenAccept(listaEmpresas -> {
-            
-                if (texto.isEmpty()) {
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaEmpresas.setModel(modelo);
+                    this.tablaEmpresas.setEnabled(true);
+                    this.txtTotalEmpresas.setText("* Total de Empresas : " + this.tablaEmpresas.getRowCount());
+                });
 
-                    // CARGAMOS TODOS LOS DATOS           
-                    Object arrayObjetos[] = new Object[6];
-                    for (Empresas_Object aux : listaEmpresas) {
+            } else {
+
+                // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO           
+                Object arrayObjetos[] = new Object[6];
+                for (Empresas_Object aux : listaEmpresas) {
+                    if (aux.getNombre().contains(texto.toUpperCase())) {
                         arrayObjetos[0] = aux.getId_empresa();
                         arrayObjetos[1] = aux.getId_empresarial();
                         arrayObjetos[2] = aux.getNombre();
@@ -363,37 +384,17 @@ public class Empresas_Vista extends javax.swing.JPanel {
                         arrayObjetos[5] = dateFormat.format(aux.getF_alta());
                         this.modelo.addRow(arrayObjetos);
                     }
-
-                    this.tablaEmpresas.setModel(this.modelo);
-
-                } else {
-
-                    // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO           
-                    Object arrayObjetos[] = new Object[6];
-                    for (Empresas_Object aux : listaEmpresas) {
-                        if (aux.getNombre().contains(texto.toUpperCase())) {
-                            arrayObjetos[0] = aux.getId_empresa();
-                            arrayObjetos[1] = aux.getId_empresarial();
-                            arrayObjetos[2] = aux.getNombre();
-                            arrayObjetos[3] = aux.getCiudad();
-                            if (aux.getSeguros_id_seguro() == null) {
-                                arrayObjetos[4] = "SIN SEGURO";
-                            } else {
-                                arrayObjetos[4] = aux.getSeguros_id_seguro().getNombre();
-                            }
-                            arrayObjetos[5] = dateFormat.format(aux.getF_alta());
-                            this.modelo.addRow(arrayObjetos);
-                        }
-                    }
-
-                    this.tablaEmpresas.setModel(this.modelo);
                 }
-                
-            });
 
-        }else{
-            this.tablaEmpresas.setModel(this.modelo);
-        }
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaEmpresas.setModel(modelo);
+                    this.tablaEmpresas.setEnabled(true);
+                    this.txtTotalEmpresas.setText("* Total de Empresas : " + this.tablaEmpresas.getRowCount());
+                });
+            }
+
+        });
+
     }
 
     // METODO-ESTETICO
@@ -469,14 +470,17 @@ public class Empresas_Vista extends javax.swing.JPanel {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿DESEAS ELIMINAR LA EMPRESA SELECCIONADA?", "EMPRESAS", JOptionPane.YES_NO_OPTION);
             if (respuesta == JOptionPane.YES_OPTION) {
                 int idEmpresa = (int) this.tablaEmpresas.getValueAt(this.tablaEmpresas.getSelectedRow(), 0);
-                this.controladorEmpresas.eliminarEmpresa_C(idEmpresa);
-                cargarDatosTabla("");
-                
-                if(this.verEmpresaVista != null && this.verEmpresaVista.getIdEmpresa() == idEmpresa){
+                this.controladorEmpresas.eliminarEmpresa_C(idEmpresa).thenRun(() -> {
+                    cargarDatosTabla("");
+                }).exceptionally(ex -> {
+                    return null;
+                });
+
+                if (this.verEmpresaVista != null && this.verEmpresaVista.getIdEmpresa() == idEmpresa) {
                     this.verEmpresaVista.dispose();
                 }
-                
-                if(this.actualizarEmpresasVista != null && this.actualizarEmpresasVista.getEmpresa().getId_empresa() == idEmpresa){
+
+                if (this.actualizarEmpresasVista != null && this.actualizarEmpresasVista.getEmpresa().getId_empresa() == idEmpresa) {
                     this.actualizarEmpresasVista.dispose();
                 }
             }
@@ -488,17 +492,17 @@ public class Empresas_Vista extends javax.swing.JPanel {
 
     // METODO PARA ABRIR LA PESTAÑA QUE PERMITE AGREGAR LAS EMPRESAS
     private void btnAgregarEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEmpresaActionPerformed
-        this.controladorSeguros.totalSeguros_C().thenAccept(total -> {        
-            if(total > 0){                
+        this.controladorSeguros.totalSeguros_C().thenAccept(total -> {
+            if (total > 0) {
                 if (this.agregarEmpresaVista == null) {
                     this.agregarEmpresaVista = new Empresas_Agregar_Vista(this);
                     this.agregarEmpresaVista.setVisible(true);
                 } else {
                     this.agregarEmpresaVista.setVisible(true);
-                }               
-            }else{
+                }
+            } else {
                 JOptionPane.showMessageDialog(null, "AUN NO HAY SEGUROS DISPONIBLES QUE APLICAR A LA EMPRESA", "EMPRESAS", JOptionPane.INFORMATION_MESSAGE);
-            }        
+            }
         });
     }//GEN-LAST:event_btnAgregarEmpresaActionPerformed
 
@@ -507,10 +511,10 @@ public class Empresas_Vista extends javax.swing.JPanel {
         if (this.tablaEmpresas.getSelectedRow() != -1) {
             int idEmpresa = (int) this.tablaEmpresas.getValueAt(this.tablaEmpresas.getSelectedRow(), 0);
             this.controladorEmpresas.obtenerEmpresa_C(idEmpresa).thenAccept(empresa -> {
-            
+
                 if (empresa != null) {
                     this.controladorSeguros.obtenerFilaTabla(empresa.getSeguros_id_seguro()).thenAccept(indice -> {
-                    
+
                         if (this.actualizarEmpresasVista == null) {
                             this.actualizarEmpresasVista = new Empresas_Actualizar_Vista(this, empresa, indice);
                             this.actualizarEmpresasVista.setVisible(true);
@@ -520,10 +524,10 @@ public class Empresas_Vista extends javax.swing.JPanel {
                             this.actualizarEmpresasVista.cargarDatos();
                             this.actualizarEmpresasVista.setVisible(true);
                         }
-                        
+
                     });
                 }
-                
+
             });
 
         } else {
@@ -533,7 +537,7 @@ public class Empresas_Vista extends javax.swing.JPanel {
 
     // METODO PARA ABRIR LA PESTAÑA QUE PERMITE VER LOS DATOS DE LA EMPRESA
     private void btnVerEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEmpresaActionPerformed
-        if(this.tablaEmpresas.getSelectedRow() != -1){            
+        if (this.tablaEmpresas.getSelectedRow() != -1) {
             int idEmpresa = (int) this.tablaEmpresas.getValueAt(this.tablaEmpresas.getSelectedRow(), 0);
             if (idEmpresa > 0) {
 
@@ -546,28 +550,28 @@ public class Empresas_Vista extends javax.swing.JPanel {
                     this.verEmpresaVista.setVisible(true);
                 }
             }
-            
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA FILA DE LA TABLA", "EMPRESAS", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnVerEmpresaActionPerformed
-    
+
     // METODO PARA CERRAR LAS VENTANAS
-    public void eliminarVentanas(){
-        
-        if(this.verEmpresaVista != null){
+    public void eliminarVentanas() {
+
+        if (this.verEmpresaVista != null) {
             this.verEmpresaVista.dispose();
         }
-        
-        if(this.agregarEmpresaVista != null){
+
+        if (this.agregarEmpresaVista != null) {
             this.agregarEmpresaVista.dispose();
         }
-        
-        if(this.actualizarEmpresasVista != null){
+
+        if (this.actualizarEmpresasVista != null) {
             this.actualizarEmpresasVista.dispose();
         }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarEmpresa;

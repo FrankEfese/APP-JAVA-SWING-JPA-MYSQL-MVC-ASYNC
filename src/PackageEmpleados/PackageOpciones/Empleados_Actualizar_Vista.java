@@ -326,7 +326,7 @@ public class Empleados_Actualizar_Vista extends javax.swing.JFrame {
             if(Validaciones.validarEmpleado(dni, nombre, telefono)){
                 
                 this.controladorEmpleado.verificarDniYTelefono(dni, telefono).thenAccept(verificaciones -> {                
-                    if((verificaciones[0] || dni.equals(this.empleado.getDni())) && (verificaciones[1] || telefono.equals(String.valueOf(this.empleado.getTelefono())))){
+                    if((!verificaciones[0] || dni.equals(this.empleado.getDni())) && (!verificaciones[1] || telefono.equals(String.valueOf(this.empleado.getTelefono())))){
                         
                         if (this.tablaEmpresas.getRowCount() != 0) {
 
@@ -340,13 +340,16 @@ public class Empleados_Actualizar_Vista extends javax.swing.JFrame {
                                         this.empleado.setEdad(edad);
                                         this.empleado.setTelefono(Integer.parseInt(telefono));
                                         this.empleado.setEmpresas_id_empresa(empresa);
-                                        this.controladorEmpleado.actualizarEmpleado_C(this.empleado);
+                                        this.controladorEmpleado.actualizarEmpleado_C(this.empleado).thenRun(() -> {
+                                            this.vistaE.cargarDatosTabla("");
+                                        }).exceptionally(ex ->{
+                                            return null;
+                                        });
                                         this.txtDni.setText("");
                                         this.txtNombre.setText("");
                                         this.txtTelefono.setText("");
                                         this.dispose();
-                                        this.vistaE.cargarDatosTabla("");
-                                        
+                                                                                
                                     }                                
                                 }).exceptionally(ex ->{
                                     return null;
@@ -361,12 +364,14 @@ public class Empleados_Actualizar_Vista extends javax.swing.JFrame {
                             this.empleado.setNombre(nombre);
                             this.empleado.setEdad(edad);
                             this.empleado.setTelefono(Integer.parseInt(telefono));
-                            this.controladorEmpleado.actualizarEmpleado_C(this.empleado);
+                            this.controladorEmpleado.actualizarEmpleado_C(this.empleado).thenRun(() -> {
+                                this.vistaE.cargarDatosTabla("");
+                            });
                             this.txtDni.setText("");
                             this.txtNombre.setText("");
                             this.txtTelefono.setText("");
                             this.dispose();
-                            this.vistaE.cargarDatosTabla("");
+                            
                         }
                         
                     }else{

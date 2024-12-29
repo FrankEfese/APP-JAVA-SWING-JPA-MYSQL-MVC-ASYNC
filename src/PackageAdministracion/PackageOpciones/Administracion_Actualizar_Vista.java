@@ -201,10 +201,13 @@ public class Administracion_Actualizar_Vista extends javax.swing.JFrame {
                         
                         this.administrador.setCorreo(correo);
                         this.administrador.setContraseña(contra);
-                        this.controladorAdmin.actualizarAdmin_C(this.administrador);
+                        this.controladorAdmin.actualizarAdmin_C(this.administrador).thenRun(() -> {
+                            this.vistaA.cargarDatosTabla("");
+                        }).exceptionally(ex -> {
+                            return null;
+                        });
                         this.dispose();
-                        this.vistaA.cargarDatosTabla("");
-
+                        
                         if(correoActual.equals(Principal_Vista.correoAdministrador)){
                             Principal_Vista.correoAdministrador = correo;
                         }

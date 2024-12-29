@@ -321,14 +321,17 @@ public class Productos_Agregar_Vista extends javax.swing.JFrame {
                             
                                 if(empresa != null){
                                     Productos_Object producto = new Productos_Object(identificador, nombre, precio, categoria, stock, fechaActual, empresa);
-                                    this.controladorProducto.guardarProducto_C(producto);
+                                    this.controladorProducto.guardarProducto_C(producto).thenRun(() -> {
+                                        this.vistaP.cargarDatosTabla("", "");
+                                    }).exceptionally(ex -> {
+                                        return null;
+                                    });
                                     this.txtIdentificador.setText("");
                                     this.txtNombre.setText("");
                                     this.txtPrecio.setText("");
                                     this.cmbCategorias.setSelectedIndex(0);
                                     this.tablaEmpresas.clearSelection();
-                                    this.dispose();
-                                    this.vistaP.cargarDatosTabla("", "");
+                                    this.dispose();                                  
                                 }
                             
                             }).exceptionally(ex -> {

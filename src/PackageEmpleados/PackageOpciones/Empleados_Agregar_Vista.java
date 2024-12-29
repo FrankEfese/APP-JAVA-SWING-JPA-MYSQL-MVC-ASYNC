@@ -299,7 +299,7 @@ public class Empleados_Agregar_Vista extends javax.swing.JFrame {
                 
                 this.controladorEmpleados.verificarDniYTelefono(dni, telefono).thenAccept(verificacion -> {
                 
-                    if(verificacion[0] && verificacion[1]){
+                    if(!verificacion[0] && !verificacion[1]){
                         
                         if (this.tablaEmpresas.getSelectedRow() != -1) {
                             Date fechaActual = new Date();
@@ -308,14 +308,17 @@ public class Empleados_Agregar_Vista extends javax.swing.JFrame {
                                 if(empresa != null){
                                     
                                     Empleados_Object empleado = new Empleados_Object(dni, nombre, edad, Integer.parseInt(telefono), fechaActual, empresa);
-                                    this.controladorEmpleados.guardarEmpleado_C(empleado);
+                                    this.controladorEmpleados.guardarEmpleado_C(empleado).thenRun(() -> {
+                                        this.vistaE.cargarDatosTabla("");
+                                    }).exceptionally(ex -> {
+                                        return null;
+                                    });
                                     this.txtDni.setText("");
                                     this.txtNombre.setText("");
                                     this.txtTelefono.setText("");
                                     this.tablaEmpresas.clearSelection();
                                     this.dispose();
-                                    this.vistaE.cargarDatosTabla("");
-                                    
+                                                                        
                                 }
                                 
                             }).exceptionally(ex -> {

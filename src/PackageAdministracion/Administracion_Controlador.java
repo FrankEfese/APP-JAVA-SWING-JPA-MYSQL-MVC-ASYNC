@@ -28,13 +28,13 @@ public class Administracion_Controlador {
     }  
     
     // METODO PARA GUARDAR EL ADMIN (CONTROLADOR)
-    public void guardarAdmin_C(Login_Object admin){
-        CompletableFuture.runAsync(() -> this.modeloAdmin.create(admin));
+    public CompletableFuture<Void> guardarAdmin_C(Login_Object admin){
+        return CompletableFuture.runAsync(() -> this.modeloAdmin.create(admin));
     }   
     
     // METODO PARA ACTUALIZAR EL ADMIN (CONTROLADOR)
-    public void actualizarAdmin_C(Login_Object admin){
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> actualizarAdmin_C(Login_Object admin){
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloAdmin.edit(admin);
             } catch (Exception ex) {
@@ -44,8 +44,8 @@ public class Administracion_Controlador {
     }   
     
     // METODO PARA ELIMINAR UN ADMIN (CONTROLADOR)
-    public void eliminarAdmin_C(int idAdmin){
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> eliminarAdmin_C(int idAdmin){
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloAdmin.destroy(idAdmin);
             } catch (NonexistentEntityException ex) {

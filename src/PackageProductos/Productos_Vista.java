@@ -6,11 +6,16 @@ import PackageProductos.PackageOpciones.Productos_Agregar_Vista;
 import PackageProductos.PackageOpciones.Productos_VerProducto_Vista;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.ItemEvent;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class Productos_Vista extends javax.swing.JPanel {
+
+    // VARIABLE CHECK-EVENTO-CMB
+    public boolean saltarEvento = false;
 
     // CONTROLADOR DE PRODUCTOS Y EMPRESAS 
     private final Productos_Controlador controladorProductos = new Productos_Controlador();
@@ -23,11 +28,11 @@ public class Productos_Vista extends javax.swing.JPanel {
     private Productos_VerProducto_Vista verProductoVista;
     private Productos_Agregar_Vista agregarProductoVista;
     private Productos_Actualizar_Vista actualizarProductoVista;
-    
+
     // CONSTRUCTOR
     public Productos_Vista() {
         initComponents();
-        
+
         // LLAMAMOS AL METODO PARA CARGAR LOS DATOS EN LA TABLA
         cargarDatosTabla("", "");
     }
@@ -348,6 +353,9 @@ public class Productos_Vista extends javax.swing.JPanel {
     // METODO PARA CARGAR LOS DATOS DE LOS PRODUCTOS EN LA TABLA
     public void cargarDatosTabla(String texto, String categoria) {
 
+        // DESHABILITAMOS LA TABLA TEMPORALMENTE
+        this.tablaProductos.setEnabled(false);
+
         // SE APLICA LAS COLUMNAS
         String columnas[] = {"ID", "IDENTIFICADOR", "NOMBRE", "PRECIO", "CATEGORIA", "STOCK", "EMPRESA", "FECHA ALTA"};
         this.modelo = new DefaultTableModel(columnas, 0);
@@ -358,79 +366,75 @@ public class Productos_Vista extends javax.swing.JPanel {
         // FORMATO FECHA
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        // TOTAL DE PRODUCTOS
-        int totalProductos = this.controladorProductos.totalProductos().join();
+        // OBTENEMOS LOS PRODUCTOS
+        this.controladorProductos.obtenerTodosProductos_C().thenAccept(listaProductos -> {
 
-        // APLICAMOS EL TOTAL DE PRODUCTOS
-        this.txtTotalProductos.setText("* Total de Productos : " + totalProductos);
+            if (texto.isEmpty() && categoria.isEmpty()) {
 
-        if (totalProductos != 0) {
+                // CARGAMOS TODOS LOS DATOS           
+                Object arrayObjetos[] = new Object[8];
+                for (Productos_Object aux : listaProductos) {
+                    arrayObjetos[0] = aux.getId_producto();
+                    arrayObjetos[1] = aux.getIdentificador();
+                    arrayObjetos[2] = aux.getNombre();
+                    arrayObjetos[3] = String.valueOf(aux.getPrecio() + " €");
+                    arrayObjetos[4] = aux.getCategoria();
+                    arrayObjetos[5] = aux.getStock();
+                    arrayObjetos[6] = aux.getEmpresas_id_empresa_p().getNombre();
+                    arrayObjetos[7] = dateFormat.format(aux.getF_alta());
+                    this.modelo.addRow(arrayObjetos);
+                }
 
-            // OBTENEMOS LOS PRODUCTOS
-            this.controladorProductos.obtenerTodosProductos_C().thenAccept(listaProductos -> {
-            
-                if (texto.isEmpty() && categoria.isEmpty()) {
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaProductos.setModel(modelo);
+                    this.tablaProductos.setEnabled(true);
+                    this.txtTotalProductos.setText("* Total de Productos : " + this.tablaProductos.getRowCount());
+                });
 
-                    // CARGAMOS TODOS LOS DATOS           
-                    Object arrayObjetos[] = new Object[8];
-                    for (Productos_Object aux : listaProductos) {
-                        arrayObjetos[0] = aux.getId_producto();
-                        arrayObjetos[1] = aux.getIdentificador();
-                        arrayObjetos[2] = aux.getNombre();
-                        arrayObjetos[3] = String.valueOf(aux.getPrecio() + " €");
-                        arrayObjetos[4] = aux.getCategoria();
-                        arrayObjetos[5] = aux.getStock();
-                        arrayObjetos[6] = this.controladorEmpresas.obtenerEmpresa_C(aux.getEmpresas_id_empresa_p().getId_empresa()).join().getNombre();
-                        arrayObjetos[7] = dateFormat.format(aux.getF_alta());
-                        this.modelo.addRow(arrayObjetos);
-                    }
+            } else {
 
-                    this.tablaProductos.setModel(this.modelo);
+                // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO Y LA CATEGORIA           
+                Object arrayObjetos[] = new Object[8];
+                for (Productos_Object aux : listaProductos) {
+                    if (!categoria.equals("--- SELECCIONAR ---")) {
+                        if (aux.getNombre().contains(texto.toUpperCase()) && aux.getCategoria().equals(categoria)) {
+                            arrayObjetos[0] = aux.getId_producto();
+                            arrayObjetos[1] = aux.getIdentificador();
+                            arrayObjetos[2] = aux.getNombre();
+                            arrayObjetos[3] = String.valueOf(aux.getPrecio() + " €");
+                            arrayObjetos[4] = aux.getCategoria();
+                            arrayObjetos[5] = aux.getStock();
+                            arrayObjetos[6] = aux.getEmpresas_id_empresa_p().getNombre();
+                            arrayObjetos[7] = dateFormat.format(aux.getF_alta());
+                            this.modelo.addRow(arrayObjetos);
 
-                } else {
+                        }
 
-                    // CARGAMOS LOS DATOS QUE CONTENGAN EL TEXTO INTRODUCIDO EN EL FILTRO Y LA CATEGORIA           
-                    Object arrayObjetos[] = new Object[8];
-                    for (Productos_Object aux : listaProductos) {
-                        if (!categoria.equals("--- SELECCIONAR ---")) {
-                            if (aux.getNombre().contains(texto.toUpperCase()) && aux.getCategoria().equals(categoria)) {
-                                arrayObjetos[0] = aux.getId_producto();
-                                arrayObjetos[1] = aux.getIdentificador();
-                                arrayObjetos[2] = aux.getNombre();
-                                arrayObjetos[3] = String.valueOf(aux.getPrecio() + " €");
-                                arrayObjetos[4] = aux.getCategoria();
-                                arrayObjetos[5] = aux.getStock();
-                                arrayObjetos[6] = this.controladorEmpresas.obtenerEmpresa_C(aux.getEmpresas_id_empresa_p().getId_empresa()).join().getNombre();
-                                arrayObjetos[7] = dateFormat.format(aux.getF_alta());
-                                this.modelo.addRow(arrayObjetos);
+                    } else {
 
-                            }
+                        if (aux.getNombre().contains(texto.toUpperCase())) {
+                            arrayObjetos[0] = aux.getId_producto();
+                            arrayObjetos[1] = aux.getIdentificador();
+                            arrayObjetos[2] = aux.getNombre();
+                            arrayObjetos[3] = aux.getPrecio();
+                            arrayObjetos[4] = aux.getCategoria();
+                            arrayObjetos[5] = aux.getStock();
+                            arrayObjetos[6] = aux.getEmpresas_id_empresa_p().getNombre();
+                            arrayObjetos[7] = dateFormat.format(aux.getF_alta());
+                            this.modelo.addRow(arrayObjetos);
 
-                        } else {
-
-                            if (aux.getNombre().contains(texto.toUpperCase())) {
-                                arrayObjetos[0] = aux.getId_producto();
-                                arrayObjetos[1] = aux.getIdentificador();
-                                arrayObjetos[2] = aux.getNombre();
-                                arrayObjetos[3] = aux.getPrecio();
-                                arrayObjetos[4] = aux.getCategoria();
-                                arrayObjetos[5] = aux.getStock();
-                                arrayObjetos[6] = this.controladorEmpresas.obtenerEmpresa_C(aux.getEmpresas_id_empresa_p().getId_empresa()).join().getNombre();
-                                arrayObjetos[7] = dateFormat.format(aux.getF_alta());
-                                this.modelo.addRow(arrayObjetos);
-
-                            }
                         }
                     }
-
-                    this.tablaProductos.setModel(this.modelo);
                 }
-            
-            });
 
-        }else{
-            this.tablaProductos.setModel(this.modelo);
-        }
+                SwingUtilities.invokeLater(() -> {
+                    this.tablaProductos.setModel(modelo);
+                    this.tablaProductos.setEnabled(true);
+                    this.txtTotalProductos.setText("* Total de Productos : " + this.tablaProductos.getRowCount());
+                });
+            }            
+
+        });
 
     }
 
@@ -498,16 +502,20 @@ public class Productos_Vista extends javax.swing.JPanel {
 
     // METODO PARA REINICIAR EL FILTRO , LAS CATEGORIAS Y RECARGAR LA TABLA
     private void btnReinicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReinicioActionPerformed
+        this.saltarEvento = true;
         this.txtFiltro.setText("");
         this.cmbCategorias.setSelectedIndex(0);
         cargarDatosTabla("", "");
+        this.saltarEvento = false;
     }//GEN-LAST:event_btnReinicioActionPerformed
 
     // METODO PARA EL FILTRO DE CATEGORIA
     private void cmbCategoriasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCategoriasItemStateChanged
-        String texto = this.txtFiltro.getText();
-        String categoria = String.valueOf(this.cmbCategorias.getSelectedItem());
-        cargarDatosTabla(texto, categoria);
+        if (!this.saltarEvento && evt.getStateChange() == ItemEvent.SELECTED) {
+            String texto = this.txtFiltro.getText();
+            String categoria = String.valueOf(this.cmbCategorias.getSelectedItem());
+            cargarDatosTabla(texto, categoria);
+        }
     }//GEN-LAST:event_cmbCategoriasItemStateChanged
 
     // METODO PARA ELIMINAR UN PRODUCTO
@@ -516,14 +524,17 @@ public class Productos_Vista extends javax.swing.JPanel {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿DESEAS ELIMINAR EL PRODUCTO SELECCIONADO?", "PRODUCTOS", JOptionPane.YES_NO_OPTION);
             if (respuesta == JOptionPane.YES_OPTION) {
                 int idProducto = (int) this.tablaProductos.getValueAt(this.tablaProductos.getSelectedRow(), 0);
-                this.controladorProductos.eliminarProducto_C(idProducto);
-                cargarDatosTabla("", "");
-                
-                if(this.verProductoVista != null && this.verProductoVista.getIdProducto() == idProducto){
+                this.controladorProductos.eliminarProducto_C(idProducto).thenRun(() -> {
+                    cargarDatosTabla("", "");
+                }).exceptionally(ex -> {
+                    return null;
+                });
+
+                if (this.verProductoVista != null && this.verProductoVista.getIdProducto() == idProducto) {
                     this.verProductoVista.dispose();
                 }
-                
-                if(this.actualizarProductoVista != null && this.actualizarProductoVista.getProducto().getId_producto() == idProducto){
+
+                if (this.actualizarProductoVista != null && this.actualizarProductoVista.getProducto().getId_producto() == idProducto) {
                     this.actualizarProductoVista.dispose();
                 }
             }
@@ -534,7 +545,7 @@ public class Productos_Vista extends javax.swing.JPanel {
 
     // METODO PARA ABRIR LA PESTAÑA QUE PERMITE VER LA INFORMACION DEL PRODUCTO
     private void btnVerProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerProductoActionPerformed
-        if(this.tablaProductos.getSelectedRow() != -1){            
+        if (this.tablaProductos.getSelectedRow() != -1) {
             int idProducto = (int) this.tablaProductos.getValueAt(this.tablaProductos.getSelectedRow(), 0);
             if (idProducto > 0) {
 
@@ -547,27 +558,27 @@ public class Productos_Vista extends javax.swing.JPanel {
                     this.verProductoVista.setVisible(true);
                 }
             }
-            
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA FILA DE LA TABLA", "PRODUCTOS", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnVerProductoActionPerformed
 
     // METODO PARA ABRIR LA PESTAÑA QUE PERMITE AGREGAR UN PRODUCTO
     private void btnAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProductoActionPerformed
-        this.controladorEmpresas.totalEmpresas().thenAccept(total -> {     
-            if(total > 0){
-                
+        this.controladorEmpresas.totalEmpresas().thenAccept(total -> {
+            if (total > 0) {
+
                 if (this.agregarProductoVista == null) {
                     this.agregarProductoVista = new Productos_Agregar_Vista(this);
                     this.agregarProductoVista.setVisible(true);
                 } else {
                     this.agregarProductoVista.setVisible(true);
                 }
-                
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(null, "AUN NO HAY EMPRESAS DISPONIBLES QUE APLICAR AL PRODUCTO", "PRODUCTOS", JOptionPane.INFORMATION_MESSAGE);
-            }           
+            }
         });
     }//GEN-LAST:event_btnAgregarProductoActionPerformed
 
@@ -576,50 +587,48 @@ public class Productos_Vista extends javax.swing.JPanel {
         if (this.tablaProductos.getSelectedRow() != -1) {
             int idProducto = (int) this.tablaProductos.getValueAt(this.tablaProductos.getSelectedRow(), 0);
             this.controladorProductos.obtenerProducto_C(idProducto).thenAccept(producto -> {
-            
+
                 if (producto != null) {
                     this.controladorEmpresas.obtenerFilaTabla(producto.getEmpresas_id_empresa_p()).thenAccept(indice -> {
-                    
-                        if(indice != -1){
-                            
-                            int indiceCat = this.controladorProductos.obtenerIndiceCombo(producto.getCategoria());
-                            if (this.actualizarProductoVista == null) {
-                                this.actualizarProductoVista = new Productos_Actualizar_Vista(this, producto, indice , indiceCat);
-                                this.actualizarProductoVista.setVisible(true);
-                            } else {
-                                this.actualizarProductoVista.setProducto(producto);
-                                this.actualizarProductoVista.setIndice(indice);
-                                this.actualizarProductoVista.setIndiceC(indiceCat);
-                                this.actualizarProductoVista.cargarDatos();
-                                this.actualizarProductoVista.setVisible(true);
-                            }                           
-                        }                   
-                    });                  
-                }           
+
+                        int indiceCat = this.controladorProductos.obtenerIndiceCombo(producto.getCategoria());
+                        if (this.actualizarProductoVista == null) {
+                            this.actualizarProductoVista = new Productos_Actualizar_Vista(this, producto, indice, indiceCat);
+                            this.actualizarProductoVista.setVisible(true);
+                        } else {
+                            this.actualizarProductoVista.setProducto(producto);
+                            this.actualizarProductoVista.setIndice(indice);
+                            this.actualizarProductoVista.setIndiceC(indiceCat);
+                            this.actualizarProductoVista.cargarDatos();
+                            this.actualizarProductoVista.setVisible(true);
+                        }
+
+                    });
+                }
             });
 
         } else {
             JOptionPane.showMessageDialog(null, "DEBES SELECCIONAR UNA FILA DE LA TABLA", "PRODUCTOS", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnActualizarProductoActionPerformed
-    
+
     // METODO PARA CERRAR LAS VENTANAS
-    public void eliminarVentanas(){
-        
-        if(this.verProductoVista != null){
+    public void eliminarVentanas() {
+
+        if (this.verProductoVista != null) {
             this.verProductoVista.dispose();
         }
-        
-        if(this.agregarProductoVista != null){
+
+        if (this.agregarProductoVista != null) {
             this.agregarProductoVista.dispose();
         }
-        
-        if(this.actualizarProductoVista != null){
-            this.agregarProductoVista.dispose();
+
+        if (this.actualizarProductoVista != null) {
+            this.actualizarProductoVista.dispose();
         }
-        
+
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarProducto;

@@ -23,13 +23,13 @@ public class Productos_Controlador {
     }
 
     // METODO PARA GUARDAR EL PRODUCTO (CONTROLADOR)
-    public void guardarProducto_C(Productos_Object producto) {
-        CompletableFuture.runAsync(() -> this.modeloProducto.create(producto));
+    public CompletableFuture<Void> guardarProducto_C(Productos_Object producto) {
+        return CompletableFuture.runAsync(() -> this.modeloProducto.create(producto));
     }
 
     // METODO PARA ELIMINAR UN PRODUCTO (CONTROLADOR)
-    public void eliminarProducto_C(int idProducto) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> eliminarProducto_C(int idProducto) {
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloProducto.destroy(idProducto);
             } catch (NonexistentEntityException ex) {
@@ -39,8 +39,8 @@ public class Productos_Controlador {
     }
 
     // METODO PARA ACTUALIZAR EL PRODUCTO (CONTROLADOR)
-    public void actualizarProducto_C(Productos_Object producto) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> actualizarProducto_C(Productos_Object producto) {
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloProducto.edit(producto);
             } catch (Exception ex) {
@@ -78,7 +78,7 @@ public class Productos_Controlador {
 
     // METODO PARA OBTENER INDICE SELECCIONADO DEL COMBO
     public int obtenerIndiceCombo(String categoria) {
-        List<String> categorias = new ArrayList<>(Arrays.asList("-- SELECCIONAR --", "ALIMENTACION", "ROPA", "DEPORTES", "VIDEOJUEGOS" , "COSAS VARIAS"));
+        List<String> categorias = new ArrayList<>(Arrays.asList("--- SELECCIONAR ---", "ALIMENTACION", "ROPA", "DEPORTES", "VIDEOJUEGOS" , "COSAS VARIAS"));
         return categorias.indexOf(categoria);
     }
 

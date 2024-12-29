@@ -21,13 +21,13 @@ public class Empresas_Controlador {
     }
 
     // METODO PARA GUARDAR LA EMPRESA (CONTROLADOR)
-    public void guardarEmpresa_C(Empresas_Object empresa) {
-        CompletableFuture.runAsync(() -> this.modeloEmpresas.create(empresa));
+    public CompletableFuture<Void> guardarEmpresa_C(Empresas_Object empresa) {
+        return CompletableFuture.runAsync(() -> this.modeloEmpresas.create(empresa));
     }
 
     // METODO PARA ELIMINAR UNA EMPRESA (CONTROLADOR)
-    public void eliminarEmpresa_C(int idEmpresa) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> eliminarEmpresa_C(int idEmpresa) {
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloEmpresas.destroy(idEmpresa);
             } catch (NonexistentEntityException ex) {
@@ -42,8 +42,8 @@ public class Empresas_Controlador {
     }
 
     // METODO PARA ACTUALIZAR LA EMPRESA (CONTROLADOR)
-    public void actualizarEmpresa_C(Empresas_Object empresa) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> actualizarEmpresa_C(Empresas_Object empresa) {
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloEmpresas.edit(empresa);
             } catch (Exception ex) {

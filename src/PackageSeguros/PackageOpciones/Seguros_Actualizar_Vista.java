@@ -173,7 +173,7 @@ public class Seguros_Actualizar_Vista extends javax.swing.JFrame {
         // APLICAMOS LA INFORMACION PRINCIPAL DEL SEGURO
         this.txtNombre.setText(this.seguro.getNombre());
         this.txtPrecio.setText(String.valueOf(this.seguro.getPrecio()));        
-
+        
     }
 
     // METODO-ESTETICO
@@ -203,10 +203,13 @@ public class Seguros_Actualizar_Vista extends javax.swing.JFrame {
                         
                         this.seguro.setNombre(nombre);
                         this.seguro.setPrecio(precio);
-                        this.controladorSeguro.actualizarSeguro_C(seguro);
+                        this.controladorSeguro.actualizarSeguro_C(seguro).thenRun(() -> {
+                            this.vistaS.cargarDatosTabla("");
+                        }).exceptionally(ex ->{
+                            return null;
+                        });
                         this.dispose();
-                        this.vistaS.cargarDatosTabla("");
-                        
+                                                
                     }else{
                         JOptionPane.showMessageDialog(null, "NOMBRE DE SEGURO YA EXISTENTE", "ACTUALIZAR SEGURO", JOptionPane.INFORMATION_MESSAGE);
                     }

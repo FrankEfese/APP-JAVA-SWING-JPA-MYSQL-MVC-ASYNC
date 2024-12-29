@@ -284,13 +284,16 @@ public class Empresas_Agregar_Vista extends javax.swing.JFrame {
                             this.controladorSeguro.obtenerSeguro_C((int) this.tablaSeguros.getValueAt(this.tablaSeguros.getSelectedRow(), 0)).thenAccept(seguro -> {
                                 if(seguro != null){
                                     Empresas_Object empresa = new Empresas_Object(idEmp, nombre, ciudad, fechaActual, seguro);
-                                    this.controladorEmpresa.guardarEmpresa_C(empresa);
+                                    this.controladorEmpresa.guardarEmpresa_C(empresa).thenRun(() -> {
+                                        this.vistaE.cargarDatosTabla("");
+                                    }).exceptionally(ex ->{
+                                        return null;
+                                    });
                                     this.txtIdEmp.setText("");
                                     this.txtNombre.setText("");
                                     this.txtCiudad.setText("");
                                     this.tablaSeguros.clearSelection();
-                                    this.dispose();
-                                    this.vistaE.cargarDatosTabla("");
+                                    this.dispose();                                   
                                 }
                                                                 
                             }).exceptionally(ex ->{

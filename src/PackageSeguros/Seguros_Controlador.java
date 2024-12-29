@@ -21,8 +21,8 @@ public class Seguros_Controlador {
     }
 
     // METODO PARA GUARDAR EL SEGURO (CONTROLADOR)
-    public void guardarSeguro_C(Seguros_Object seguro) {
-        CompletableFuture.runAsync(() -> this.modeloSeguros.create(seguro));
+    public CompletableFuture<Void> guardarSeguro_C(Seguros_Object seguro) {
+        return CompletableFuture.runAsync(() -> this.modeloSeguros.create(seguro));
     }
 
     // METODO PARA OBTENER UN SEGURO (CONTROLADOR)
@@ -31,8 +31,8 @@ public class Seguros_Controlador {
     }
 
     // METODO PARA ACTUALIZAR EL SEGURO (CONTROLADOR)
-    public void actualizarSeguro_C(Seguros_Object seguro) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> actualizarSeguro_C(Seguros_Object seguro) {
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloSeguros.edit(seguro);
             } catch (Exception ex) {
@@ -42,8 +42,8 @@ public class Seguros_Controlador {
     }
 
     // METODO PARA ELIMINAR UN SEGURO (CONTROLADOR)
-    public void eliminarSeguro_C(int idSeguro) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> eliminarSeguro_C(int idSeguro) {
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloSeguros.destroy(idSeguro);
             } catch (NonexistentEntityException ex) {

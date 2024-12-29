@@ -16,7 +16,6 @@ public class Inicio_Vista extends javax.swing.JPanel {
     private final Productos_Controlador controladorProducto = new Productos_Controlador();
     private final Administracion_Controlador controladorAdmin = new Administracion_Controlador();
 
-
     // CONSTRUCTOR
     public Inicio_Vista() {
         initComponents();
@@ -162,11 +161,25 @@ public class Inicio_Vista extends javax.swing.JPanel {
     public void cargarDatosTabla() {
         
         // APLICAMOS EL TOTAL DE SEGUROS, EMPRESAS , EMPLEADOS , PRODUCTOS y ADMINISTRADORES
-        this.lblSeguros.setText("TOTAL DE SEGUROS : " + this.controladorSeguro.totalSeguros_C());
-        this.lblEmpresas.setText("TOTAL DE EMPRESAS : " + this.controladorEmpresa.totalEmpresas());
-        this.lblEmpleados.setText("TOTAL DE EMPLEADOS : " + this.controladorEmpleado.totalEmpleados());
-        this.lblProductos.setText("TOTAL DE PRODUCTOS : " + this.controladorProducto.totalProductos());
-        this.lblAdmin.setText("TOTAL DE ADMINISTRADORES : " + this.controladorAdmin.totalAdmin());
+        this.controladorSeguro.totalSeguros_C().thenAccept(totalSeguros -> {
+            this.lblSeguros.setText("TOTAL DE SEGUROS : " + totalSeguros);
+        });
+        
+        this.controladorEmpresa.totalEmpresas().thenAccept(totalEmpresas -> {
+            this.lblEmpresas.setText("TOTAL DE EMPRESAS : " + totalEmpresas);
+        });
+        
+        this.controladorEmpleado.totalEmpleados().thenAccept(totalEmpleados -> {
+            this.lblEmpleados.setText("TOTAL DE EMPLEADOS : " + totalEmpleados);
+        });
+        
+        this.controladorProducto.totalProductos().thenAccept(totalProductos -> {
+            this.lblProductos.setText("TOTAL DE PRODUCTOS : " + totalProductos);
+        });
+        
+        this.controladorAdmin.totalAdmin().thenAccept(totalAdmins -> {
+            this.lblAdmin.setText("TOTAL DE ADMINISTRADORES : " + totalAdmins);
+        });       
 
     }
 

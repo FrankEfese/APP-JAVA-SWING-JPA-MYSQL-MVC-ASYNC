@@ -185,12 +185,15 @@ public class Seguros_Agregar_Vista extends javax.swing.JFrame {
                         
                         Date fechaActual = new Date();
                         Seguros_Object seguro = new Seguros_Object(nombre, precio, fechaActual);
-                        this.controladorSeguro.guardarSeguro_C(seguro);
+                        this.controladorSeguro.guardarSeguro_C(seguro).thenRun(() -> {
+                            this.vistaS.cargarDatosTabla("");
+                        }).exceptionally(ex ->{
+                            return null;
+                        });
                         this.txtNombre.setText("");
                         this.txtPrecio.setText("");
                         this.dispose();
-                        this.vistaS.cargarDatosTabla("");
-                        
+                                                
                     }else{
                         JOptionPane.showMessageDialog(null, "NOMBRE DE SEGURO YA EXISTENTE", "AGREGAR SEGURO", JOptionPane.INFORMATION_MESSAGE);
                     }

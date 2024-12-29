@@ -26,13 +26,13 @@ public class Empleados_Controlador {
     }
     
     // METODO PARA GUARDAR EL EMPLEADO (CONTROLADOR)
-    public void guardarEmpleado_C(Empleados_Object empleado){
-        CompletableFuture.runAsync(() -> this.modeloEmpleados.create(empleado));
+    public CompletableFuture<Void> guardarEmpleado_C(Empleados_Object empleado){
+        return CompletableFuture.runAsync(() -> this.modeloEmpleados.create(empleado));
     }
 
     // METODO PARA ELIMINAR UN EMPLEADO (CONTROLADOR)
-    public void eliminarEmpleado_C(int idEmpleado) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> eliminarEmpleado_C(int idEmpleado) {
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloEmpleados.destroy(idEmpleado);
             } catch (NonexistentEntityException ex) {
@@ -42,8 +42,8 @@ public class Empleados_Controlador {
     }
     
     // METODO PARA ACTUALIZAR AL EMPLEADO (CONTROLADOR)
-    public void actualizarEmpleado_C(Empleados_Object empleado){
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> actualizarEmpleado_C(Empleados_Object empleado){
+        return CompletableFuture.runAsync(() -> {
             try {
                 this.modeloEmpleados.edit(empleado);
             } catch (Exception ex) {
