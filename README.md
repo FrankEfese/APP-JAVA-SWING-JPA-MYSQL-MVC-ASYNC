@@ -1,4 +1,4 @@
-# <div align="center"> APP-JAVA - JAVA SWING - JPA - MYSQL - MVC </div>
+# <div align="center"> APP-JAVA - JAVA SWING - JPA - MYSQL - MVC - ASYNC</div>
 
 [![portada.png](https://i.postimg.cc/vB9PG24G/portada.png)](https://postimg.cc/mzL3ww3n)
 
@@ -35,3 +35,11 @@
 [![mvc.png](https://i.postimg.cc/rmTCcVxw/mvc.png)](https://postimg.cc/FfPJVQTM)
 
 <h4 align="center">The application uses the Model-View-Controller architecture, which will allow for better organization and scalability for future updates.</h4>
+
+<br>
+
+## <div align="center">COMPLETABLE FUTURE</div>
+
+[![Async.png](https://i.postimg.cc/Pxck1KYn/Async.png)](https://postimg.cc/9RGShdLL)
+
+<h4 align="center">This application leverages Java's CompletableFuture class to implement asynchronous operations, allowing intensive tasks such as database interactions to run in the background. This significantly improves the responsiveness of the user interface built with Java Swing by preventing blocking and providing a smoother user experience. Thanks to this asynchronous architecture, the application can handle multiple processes concurrently, optimizing performance without compromising the simplicity of the MVC-based design.</h4>
